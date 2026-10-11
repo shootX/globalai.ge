@@ -37,7 +37,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('admin')->middleware('no.store')->group(function () {
         Route::post('login', [AuthController::class, 'login'])->middleware('throttle:admin-login');
 
-        Route::middleware(['auth:sanctum', 'token.active', 'throttle:admin-api'])->group(function () {
+        Route::middleware(['auth:sanctum', 'token.active', 'throttle:admin-api', 'can:admin'])->group(function () {
             Route::post('logout', [AuthController::class, 'logout']);
 
             Route::get('tokens', [TokenController::class, 'index']);

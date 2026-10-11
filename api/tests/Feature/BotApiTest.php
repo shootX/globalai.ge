@@ -315,3 +315,24 @@ it('creates admins and bots with the admin role via artisan', function () {
     $bot = User::query()->where('is_bot', true)->firstOrFail();
     expect($bot->role)->toBe('admin');
 });
+
+it('blocks non-admin users on every admin route but not on login', function () {
+    $editor = User::factory()->create(['role' => 'editor', 'password' => 'secret-password-123']);
+    $token = adminToken($editor);
+
+    $routes = collect(app('router')->getRoutes()->getRoutes())
+        ->filter(fn ($route) => str_starts_with($route->uri(), 'api/v1/admin/') && $route->uri() !== 'api/v1/admin/login');
+
+    expect($routes->count())->toBeGreaterThan(20);
+
+    foreach ($routes as $route) {
+        expect($route->gatherMiddleware())->toContain('can:admin');
+    }
+
+    $this->withToken($token)->getJson('/api/v1/admin/services')->assertForbidden();
+    $this->withToken($token)->getJson('/api/v1/admin/audit-logs')->assertForbidden();
+    $this->withToken($token)->postJson('/api/v1/admin/logout')->assertForbidden();
+
+    $this->postJson('/api/v1/admin/login', ['email' => $editor->email, 'password' => 'secret-password-123'])
+        ->assertStatus(200);
+});

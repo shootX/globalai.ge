@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use App\Models\User;
 use App\Observers\SettingObserver;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -24,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
         Translatable::fallback(fallbackLocale: 'ka');
 
         Setting::observe(SettingObserver::class);
+
+        Gate::define('admin', fn (User $user): bool => $user->role === User::ROLE_ADMIN);
 
         RateLimiter::for('contact', function (Request $request) {
             return Limit::perMinute(5)->by('contact:'.$request->ip());
