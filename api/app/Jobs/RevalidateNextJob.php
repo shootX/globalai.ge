@@ -11,6 +11,11 @@ class RevalidateNextJob implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 3;
+
+    /** @var array<int, int> */
+    public array $backoff = [10, 60, 300];
+
     public const TAGS = ['services', 'projects', 'pages', 'team', 'settings'];
 
     public function __construct(public string $tag)
@@ -29,9 +34,10 @@ class RevalidateNextJob implements ShouldQueue
             return;
         }
 
+        $timestamp = now()->getTimestamp();
         $payload = json_encode([
             'tag' => $this->tag,
-            'timestamp' => now()->getTimestamp(),
+            'timestamp' => $timestamp,
         ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES);
 
         $signature = hash_hmac('sha256', $payload, $secret);
@@ -39,8 +45,7 @@ class RevalidateNextJob implements ShouldQueue
         Http::timeout(5)
             ->withHeaders([
                 'X-GlobalAI-Signature' => $signature,
-                'X-Revalidate-Secret' => $secret,
-                'Authorization' => 'Bearer '.$secret,
+                'X-GlobalAI-Timestamp' => (string) $timestamp,
                 'Accept' => 'application/json',
             ])
             ->withBody($payload, 'application/json')

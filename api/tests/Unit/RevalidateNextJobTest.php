@@ -37,3 +37,32 @@ it('does nothing when the revalidation webhook is not configured', function () {
 
     Http::assertNothingSent();
 });
+
+it('never sends the raw secret and adds a matching timestamp header', function () {
+    Http::fake(['https://web.test/*' => Http::response(['ok' => true], 200)]);
+
+    config([
+        'services.next.revalidate_url' => 'https://web.test/api/revalidate',
+        'services.next.revalidate_secret' => 'test-signing-secret',
+    ]);
+
+    (new RevalidateNextJob('pages'))->handle();
+
+    Http::assertSent(function ($request): bool {
+        $body = json_decode($request->body(), true);
+        $timestamp = $request->header('X-GlobalAI-Timestamp')[0] ?? '';
+
+        return ! $request->hasHeader('X-Revalidate-Secret')
+            && ! $request->hasHeader('Authorization')
+            && ! str_contains(implode(' ', array_merge(...array_values($request->headers()))), 'test-signing-secret')
+            && $timestamp === (string) $body['timestamp']
+            && abs(now()->getTimestamp() - (int) $timestamp) < 5;
+    });
+});
+
+it('retries three times with backoff', function () {
+    $job = new RevalidateNextJob('team');
+
+    expect($job->tries)->toBe(3);
+    expect($job->backoff)->toBe([10, 60, 300]);
+});

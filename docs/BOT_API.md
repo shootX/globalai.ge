@@ -188,7 +188,7 @@ Creating, updating, or deleting a service, project, page, or team member, updati
 { "tag": "pages", "timestamp": 1710000000 }
 ```
 
-Headers: `X-GlobalAI-Signature` is `hash_hmac('sha256', rawBody, secret)`, plus `Authorization: Bearer <secret>` and `X-Revalidate-Secret`. The secret is `REVALIDATE_SECRET`, or `NEXT_REVALIDATE_SECRET` when the first is empty. Tags: `services`, `projects`, `pages`, `team`, `settings`. If the URL or secret is empty, the job does nothing. Submission changes do not revalidate. `noindex` pages stay out of the sitemap and are disallowed in `robots.txt`.
+Headers: `X-GlobalAI-Signature` is `hash_hmac('sha256', rawBody, secret)` and `X-GlobalAI-Timestamp` (unix seconds, equal to `timestamp` in the body). The raw secret is never sent. Next.js accepts only a valid signature with a timestamp within ±5 minutes. The job retries 3 times (backoff 10s, 60s, 300s). The secret is `REVALIDATE_SECRET`, or `NEXT_REVALIDATE_SECRET` when the first is empty. Tags: `services`, `projects`, `pages`, `team`, `settings`. If the URL or secret is empty, the job does nothing. Submission changes do not revalidate. `noindex` pages stay out of the sitemap and are disallowed in `robots.txt`.
 
 ## Errors
 
