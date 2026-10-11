@@ -32,3 +32,13 @@ Agents append a dated entry after every task. Read `docs/` first.
 - Revalidation stays a queued HMAC POST to `POST /api/revalidate`, and also sends `REVALIDATE_SECRET`.
 - Admin UI: token page, change log, SEO tab. `docs/BOT_API.md` and `openapi.yaml` describe the bot.
 
+
+## 2026-10-11 — PR #1 backend review fixes
+
+- Revalidation sends only `X-GlobalAI-Signature` (HMAC of body) + `X-GlobalAI-Timestamp`; raw secret no longer sent. Next route accepts only a valid signature with timestamp ±5 min. Job: 3 tries, backoff 10/60/300 s.
+- Admins list/revoke all tokens (with `tokenable_id`, `owner_name`, never the secret). Bots get 403 on `POST /admin/tokens`.
+- `users.role` default is now `editor` (migration keeps existing rows `admin`). `role`/`is_bot` are not mass-assignable; `bot:create`/`admin:create` use `forceFill`.
+- `can:admin` gate (`role === 'admin'`) on all admin routes except login.
+- `api/public/storage` untracked + git-ignored; run `php artisan storage:link` on deploy. Added `api/bootstrap/cache/.gitkeep`.
+- Upload delete is audited only after success; index on `audit_logs.action`.
+- Pest: 111/111 on `globalai_test`.

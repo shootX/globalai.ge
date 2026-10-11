@@ -29,3 +29,11 @@
 - Admin chrome stays Georgian. New strings also exist in `messages/en.json` and `messages/ru.json` under `adminOps`. Accent buttons use `#C8290B` with white text. Secondary copy uses `#3D4A5C`.
 - Pest uses `globalai_test` only (`phpunit.xml`). Do not point tests at the live `globalai` database.
 
+
+## 2026-10-11 — PR #1 review fixes
+
+- Revalidation webhook no longer carries the secret in headers (supersedes the note above). Contract: HMAC-SHA256 of raw body in `X-GlobalAI-Signature`, unix seconds in `X-GlobalAI-Timestamp` equal to body `timestamp`, ±300 s skew.
+- New users default to `editor`; only `admin` passes the `admin` gate, which guards every `/api/v1/admin/*` route except login. Editors can log in but get 403 everywhere else. `UserFactory` defaults to `admin` for tests.
+- Admin token endpoints work across all users (revoke a leaked bot token). Bots cannot mint tokens.
+- Tokens without `expires_at` are rejected with 401 (`token.active`). Any old non-expiring token must be reissued.
+- `api/public/storage` is never committed; `php artisan storage:link` creates it.
