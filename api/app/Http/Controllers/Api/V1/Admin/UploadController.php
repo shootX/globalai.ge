@@ -42,11 +42,11 @@ class UploadController extends Controller
         try {
             abort_unless($disk->exists($path), 404);
 
-            AuditLogger::write('deleted', null, ['path' => $path], null, modelType: 'upload');
-
             if (! $disk->delete($path)) {
                 throw UnableToDeleteFile::atLocation($path);
             }
+
+            AuditLogger::write('deleted', null, ['path' => $path], null, modelType: 'upload');
         } catch (CorruptedPathDetected|UnableToDeleteFile) {
             // Safety net: the request should already have rejected such paths.
             throw ValidationException::withMessages([
