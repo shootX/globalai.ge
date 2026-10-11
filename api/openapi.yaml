@@ -1,0 +1,1028 @@
+openapi: 3.0.3
+info:
+  title: globalAI.GE API
+  version: 1.0.0
+  description: |
+    Content API for the globalAI.GE site.
+    Public reads take `locale` (`ka`, `en`, or `ru`) and return one language, falling back to Georgian.
+    Admin routes require a Sanctum bearer token.
+    Error and validation messages follow the request language: `?locale=` (ka, en, ru) wins,
+    then `Accept-Language`, else Georgian. The chosen language is echoed in `Content-Language`.
+    Nested translatable fields get readable names, e.g. `title.ka` → "title (Georgian)" / "სათაური (ქართული)".
+servers:
+  - url: http://localhost:8000
+    description: Local
+tags:
+  - name: Public
+  - name: Contact
+  - name: Admin
+paths:
+  /api/v1/services:
+    get:
+      tags: [Public]
+      summary: Published services
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200':
+          description: Published services, ordered by sort_order. Empty list is still 200.
+          headers:
+            Cache-Control:
+              schema: { type: string }
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceList'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/services/{slug}:
+    get:
+      tags: [Public]
+      summary: One published service by the slug of the requested locale
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        '200':
+          description: Service with slug alternates
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ServiceDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/projects:
+    get:
+      tags: [Public]
+      summary: Published projects
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200':
+          description: Published projects. An empty list means the site shows a coming-soon state.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectList'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/projects/{slug}:
+    get:
+      tags: [Public]
+      summary: One published project by locale slug
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        '200':
+          description: Project with slug alternates
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ProjectDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/team:
+    get:
+      tags: [Public]
+      summary: Published team members
+      description: Returns an empty list while the team_visible setting is false.
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200':
+          description: Team list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamList'
+  /api/v1/pages/{key}:
+    get:
+      tags: [Public]
+      summary: One page by key
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [home, about, services, projects, contact]
+      responses:
+        '200':
+          description: Page content resolved to one locale
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Page'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/settings:
+    get:
+      tags: [Public]
+      summary: Public settings for one locale
+      description: Stats are omitted while stats_visible is false. Secrets are never included.
+      parameters:
+        - $ref: '#/components/parameters/Locale'
+      responses:
+        '200':
+          description: Resolved settings
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PublicSettings'
+  /api/v1/contact:
+    post:
+      tags: [Contact]
+      summary: Send a message
+      description: |
+        Limited to 5 requests a minute per IP.
+        `company_website` is a honeypot. If it is filled the response still looks successful and nothing is stored.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '201':
+          description: Accepted, or silently dropped because the honeypot was filled
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: object
+                    required: [accepted]
+                    properties:
+                      accepted: { type: boolean }
+        '422':
+          $ref: '#/components/responses/Validation'
+        '429':
+          description: Rate limit exceeded
+  /api/v1/admin/login:
+    post:
+      tags: [Admin]
+      summary: Exchange email and password for a bearer token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, format: password }
+      responses:
+        '200':
+          description: 'Token. Shape: `{data:{token,token_type,user}}`. The password is never returned.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: object
+                    required: [token, token_type, user]
+                    properties:
+                      token: { type: string }
+                      token_type: { type: string, example: Bearer }
+                      user:
+                        type: object
+                        properties:
+                          id: { type: integer }
+                          name: { type: string }
+                          email: { type: string }
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/admin/logout:
+    post:
+      tags: [Admin]
+      summary: Revoke the current token
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Signed out
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/admin/services:
+    get:
+      tags: [Admin]
+      summary: All services, including drafts, with every locale
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Service collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminServiceList'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    post:
+      tags: [Admin]
+      summary: Create a service and queue revalidation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceWrite'
+      responses:
+        '201':
+          description: Created
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/admin/services/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Admin]
+      summary: One service with every locale
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Service
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    put:
+      tags: [Admin]
+      summary: Replace a service and queue revalidation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceWrite'
+      responses:
+        '200':
+          description: Updated
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+    delete:
+      tags: [Admin]
+      summary: Delete a service and queue revalidation
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/admin/projects:
+    get:
+      tags: [Admin]
+      summary: All projects, including drafts
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Project collection
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    post:
+      tags: [Admin]
+      summary: Create a project and queue revalidation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectWrite'
+      responses:
+        '201':
+          description: Created
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/admin/projects/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: One project with every locale
+      responses:
+        '200':
+          description: Project
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    put:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: Replace a project and queue revalidation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectWrite'
+      responses:
+        '200':
+          description: Updated
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    delete:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: Delete a project and queue revalidation
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/admin/pages:
+    get:
+      tags: [Admin]
+      summary: All pages with every locale
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Pages
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    post:
+      tags: [Admin]
+      summary: Create a missing page and queue revalidation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageWrite'
+      responses:
+        '201':
+          description: Created
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/admin/pages/{key}:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [home, about, services, projects, contact]
+    get:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: One page with every locale
+      responses:
+        '200':
+          description: Page
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    put:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: Update a page and queue revalidation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageWrite'
+      responses:
+        '200':
+          description: Updated
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+    delete:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: Delete a page and queue revalidation
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/admin/team:
+    get:
+      tags: [Admin]
+      summary: All team members, including unpublished
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Team
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    post:
+      tags: [Admin]
+      summary: Create a team member and queue revalidation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamWrite'
+      responses:
+        '201':
+          description: Created
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/admin/team/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: One team member
+      responses:
+        '200':
+          description: Team member
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    put:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: Update a team member and queue revalidation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamWrite'
+      responses:
+        '200':
+          description: Updated
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    delete:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: Delete a team member and queue revalidation
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/admin/submissions:
+    get:
+      tags: [Admin]
+      summary: Contact submissions, newest first (no pagination)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 'Submissions. Shape: `{data:[Submission], meta:{total}}`.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Submission'
+                  meta:
+                    type: object
+                    required: [total]
+                    properties:
+                      total: { type: integer }
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+  /api/v1/admin/submissions/{id}:
+    parameters:
+      - $ref: '#/components/parameters/Id'
+    get:
+      tags: [Admin]
+      security:
+        - bearerAuth: []
+      summary: One submission
+      responses:
+        '200':
+          description: Submission
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Submission'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Admin]
+      summary: Change submission status. Does not revalidate the site.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [new, read, archived]
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Submission'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Validation'
+    delete:
+      tags: [Admin]
+      summary: Permanently delete a submission
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/admin/settings:
+    get:
+      tags: [Admin]
+      summary: Settings. Translatable values (contact_address, stats[].label) are always full {ka,en,ru} objects; missing locales are null.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AdminSettings'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+    put:
+      tags: [Admin]
+      summary: Update any subset of settings and queue revalidation
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminSettings'
+      responses:
+        '200':
+          description: Updated settings. Unknown keys are ignored.
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+  /api/v1/admin/uploads:
+    post:
+      tags: [Admin]
+      summary: Upload a jpg, png, webp, or gif (max 5 MB)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: 'Stored file. Shape: `{data:{path,url}}`. Persist `path` (e.g. `uploads/abc.png`); `url` is for preview only.'
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: object
+                    required: [path, url]
+                    properties:
+                      path: { type: string, example: uploads/abc123.png }
+                      url: { type: string, example: http://localhost:8000/storage/uploads/abc123.png }
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '422':
+          $ref: '#/components/responses/Validation'
+    delete:
+      tags: [Admin]
+      summary: Delete an uploaded file from the public disk
+      description: |
+        `path` (JSON body or query string) must be a relative path inside `uploads/`, as returned by POST.
+        Absolute paths, `..`/`.` segments, backslashes, schemes and anything outside `uploads/` return 422.
+        The value is percent-decoded repeatedly until stable before checking; any `%` left after decoding
+        (or encoded traversal such as `%2e%2e%2f`, `%252e`, `%5c`) also returns 422.
+        NUL, control characters (0x00-0x1F) and DEL, raw or encoded (`%00`, `%0A`, `%2500`), return 422.
+        Non-string values and invalid UTF-8 (incl. overlong forms like `%c0%80`, lone bytes like `%ff`) return 422.
+        `path` is not trimmed.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: path
+          in: query
+          required: false
+          schema: { type: string, example: uploads/abc123.png }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [path]
+              properties:
+                path: { type: string, example: uploads/abc123.png }
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Validation'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    Locale:
+      name: locale
+      in: query
+      description: Language to resolve. Defaults to ka. Missing copy falls back to ka.
+      schema:
+        type: string
+        enum: [ka, en, ru]
+        default: ka
+    Slug:
+      name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    Id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+  responses:
+    Validation:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthenticated:
+      description: Missing or invalid bearer token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: { type: string, example: Unauthenticated. }
+    NotFound:
+      description: Not found
+  schemas:
+    Submission:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        email: { type: string, format: email }
+        phone: { type: string, nullable: true }
+        subject: { type: string, nullable: true }
+        message: { type: string }
+        locale: { type: string, enum: [ka, en, ru] }
+        ip: { type: string, nullable: true }
+        user_agent: { type: string, nullable: true }
+        status:
+          type: string
+          enum: [new, read, archived]
+          default: new
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+    Translations:
+      type: object
+      properties:
+        ka: { type: string, nullable: true }
+        en: { type: string, nullable: true }
+        ru: { type: string, nullable: true }
+    Alternates:
+      type: object
+      required: [ka, en, ru]
+      properties:
+        ka: { type: string, nullable: true }
+        en: { type: string, nullable: true }
+        ru: { type: string, nullable: true }
+    ListMeta:
+      type: object
+      required: [total]
+      properties:
+        total: { type: integer, minimum: 0 }
+    ServiceCard:
+      type: object
+      properties:
+        id: { type: integer }
+        slug: { type: string, nullable: true }
+        title: { type: string, nullable: true }
+        summary: { type: string, nullable: true }
+        sort_order: { type: integer }
+    ServiceDetail:
+      allOf:
+        - $ref: '#/components/schemas/ServiceCard'
+        - type: object
+          properties:
+            body: { type: string, nullable: true }
+            seo_title: { type: string, nullable: true }
+            seo_description: { type: string, nullable: true }
+            alternates:
+              $ref: '#/components/schemas/Alternates'
+    ServiceList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceCard'
+        meta:
+          $ref: '#/components/schemas/ListMeta'
+    ProjectCard:
+      type: object
+      properties:
+        id: { type: integer }
+        slug: { type: string, nullable: true }
+        title: { type: string, nullable: true }
+        summary: { type: string, nullable: true }
+        category: { type: string, nullable: true }
+        cover_image: { type: string, nullable: true }
+        sort_order: { type: integer }
+    ProjectDetail:
+      allOf:
+        - $ref: '#/components/schemas/ProjectCard'
+        - type: object
+          properties:
+            body: { type: string, nullable: true }
+            gallery:
+              type: array
+              items: { type: string }
+            seo_title: { type: string, nullable: true }
+            seo_description: { type: string, nullable: true }
+            alternates:
+              $ref: '#/components/schemas/Alternates'
+    ProjectList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectCard'
+        meta:
+          $ref: '#/components/schemas/ListMeta'
+    TeamMember:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string, nullable: true }
+        role: { type: string, nullable: true }
+        bio: { type: string, nullable: true }
+        photo: { type: string, nullable: true }
+        sort_order: { type: integer }
+    TeamList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMember'
+        meta:
+          $ref: '#/components/schemas/ListMeta'
+    Page:
+      type: object
+      properties:
+        key:
+          type: string
+          enum: [home, about, services, projects, contact]
+        content:
+          type: object
+          nullable: true
+          additionalProperties: true
+        seo_title: { type: string, nullable: true }
+        seo_description: { type: string, nullable: true }
+    PublicSettings:
+      type: object
+      properties:
+        contact_email: { type: string, nullable: true }
+        contact_phone: { type: string, nullable: true }
+        contact_address: { type: string, nullable: true }
+        socials:
+          type: object
+          additionalProperties: { type: string, nullable: true }
+        logo: { type: string, nullable: true }
+        stats:
+          type: array
+          items:
+            type: object
+            properties:
+              value: { type: string, nullable: true }
+              label: { type: string, nullable: true }
+        projects_nav_visible: { type: boolean }
+        team_visible: { type: boolean }
+        stats_visible: { type: boolean }
+    ContactRequest:
+      type: object
+      required: [name, email, message, locale]
+      properties:
+        name: { type: string }
+        email: { type: string, format: email }
+        phone: { type: string, nullable: true }
+        subject: { type: string, nullable: true }
+        message: { type: string }
+        locale:
+          type: string
+          enum: [ka, en, ru]
+        company_website:
+          type: string
+          description: Honeypot. Leave empty.
+    ServiceWrite:
+      type: object
+      required: [title, slug]
+      properties:
+        title:
+          $ref: '#/components/schemas/Translations'
+        slug:
+          $ref: '#/components/schemas/Translations'
+        summary:
+          $ref: '#/components/schemas/Translations'
+        body:
+          $ref: '#/components/schemas/Translations'
+        seo_title:
+          $ref: '#/components/schemas/Translations'
+        seo_description:
+          $ref: '#/components/schemas/Translations'
+        sort_order: { type: integer }
+        is_published: { type: boolean }
+    ProjectWrite:
+      allOf:
+        - $ref: '#/components/schemas/ServiceWrite'
+        - type: object
+          properties:
+            category:
+              $ref: '#/components/schemas/Translations'
+            cover_image: { type: string, nullable: true }
+            gallery:
+              type: array
+              items: { type: string }
+    PageWrite:
+      type: object
+      required: [content]
+      properties:
+        key:
+          type: string
+          enum: [home, about, services, projects, contact]
+        content:
+          type: object
+          required: [ka]
+          properties:
+            ka: { type: object, additionalProperties: true }
+            en: { type: object, nullable: true, additionalProperties: true }
+            ru: { type: object, nullable: true, additionalProperties: true }
+        seo_title:
+          $ref: '#/components/schemas/Translations'
+        seo_description:
+          $ref: '#/components/schemas/Translations'
+    TeamWrite:
+      type: object
+      required: [name, role]
+      properties:
+        name:
+          $ref: '#/components/schemas/Translations'
+        role:
+          $ref: '#/components/schemas/Translations'
+        bio:
+          $ref: '#/components/schemas/Translations'
+        photo: { type: string, nullable: true }
+        sort_order: { type: integer }
+        is_published: { type: boolean }
+    AdminServiceList:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        meta:
+          $ref: '#/components/schemas/ListMeta'
+    AdminSettings:
+      type: object
+      properties:
+        contact_email: { type: string, nullable: true }
+        contact_phone: { type: string, nullable: true }
+        contact_address:
+          $ref: '#/components/schemas/Translations'
+        socials:
+          type: object
+          properties:
+            instagram: { type: string, nullable: true }
+            facebook: { type: string, nullable: true }
+            linkedin: { type: string, nullable: true }
+            behance: { type: string, nullable: true }
+        logo: { type: string, nullable: true }
+        stats:
+          type: array
+          items:
+            type: object
+            properties:
+              value: { type: string }
+              label:
+                $ref: '#/components/schemas/Translations'
+        projects_nav_visible: { type: boolean }
+        team_visible: { type: boolean }
+        stats_visible: { type: boolean }
+    Error:
+      type: object
+      properties:
+        message: { type: string }
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items: { type: string }

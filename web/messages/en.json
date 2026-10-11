@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "siteName": "globalAI.GE",
+    "home": {
+      "title": "globalAI.GE — Digital products and AI",
+      "description": "An AI studio from Tbilisi: websites, mobile apps and AI solutions for your business."
+    },
+    "about": {
+      "title": "About us",
+      "description": "A Tbilisi studio that brings design, code and artificial intelligence together into one product."
+    },
+    "services": {
+      "title": "Services",
+      "description": "Web development, mobile apps, AI integration, UX/UI design, Cloud & DevOps and product strategy."
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "Selected projects — websites, mobile apps and AI solutions."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Tell us about your project — we reply within 24 hours."
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "projects": "Projects",
+    "contact": "Contact",
+    "cta": "Get in touch",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "main": "Main navigation",
+    "language": "Choose language",
+    "home_logo": "globalAI — home page"
+  },
+  "footer": {
+    "menu": "Menu",
+    "links": "Links",
+    "social": "Social",
+    "rights": "All rights reserved",
+    "city": "Tbilisi · Georgia",
+    "country": "Georgia"
+  },
+  "common": {
+    "stats": {
+      "projects": "Projects delivered",
+      "years": "Years of experience",
+      "clients": "Happy clients",
+      "languages": "Languages · KA EN RU"
+    }
+  },
+  "home": {
+    "orbLabel": "Abstract sphere",
+    "showreel": "Showreel",
+    "showreelSub": "2026 work",
+    "redcard1": "AI studio from Tbilisi",
+    "redcard2": "Web · Mobile · AI",
+    "ctaPrimary": "Start a project",
+    "col1t": "globalAI.GE",
+    "col1": "Digital products and AI solutions",
+    "col2t": "We build",
+    "col2": "websites, apps and smart agents for your business",
+    "col3t": "Process",
+    "col3": "Research → Design → Code → Launch",
+    "h1a": "Digital",
+    "h1b": "products",
+    "ctaSecondary": "See our work",
+    "scroll": "Scroll down ↓",
+    "down": "Down to services",
+    "servicesTitle": "Services",
+    "servicesLabel": "02 — What we do",
+    "projectsTitle": "Projects",
+    "projectsLabel": "03 — Selected work",
+    "soon1": "New projects are",
+    "soon2": "coming",
+    "soon3": "soon.",
+    "soonCta": "Get in touch →",
+    "aboutLabel": "04 — About us",
+    "aboutTitle1": "Technology",
+    "aboutTitle2": "that works",
+    "aboutText": "globalAI.GE is a Tbilisi studio that brings together designers, developers and AI specialists. We build products that grow businesses — from idea to launch.",
+    "aboutCta": "Learn more",
+    "contactLabel": "05 — Contact",
+    "contactTitle1": "Let’s start",
+    "contactTitle2": "a conversation"
+  },
+  "about": {
+    "label": "02 — Studio",
+    "title": "About us",
+    "intro": "A Tbilisi studio that brings design, code and artificial intelligence together into one product.",
+    "missionLabel": "01 — Mission",
+    "mission": "We build technology that genuinely helps businesses",
+    "p1": "globalAI.GE brings designers, developers and AI specialists together in one team.",
+    "p2": "We work with startups and large companies — from idea and research to launch and further growth. We treat every project as our own.",
+    "ctaServices": "Our services",
+    "valuesTitle": "Values",
+    "valuesLabel": "02 — What we believe in",
+    "values": [
+      {
+        "t": "Transparency",
+        "d": "Every stage, deadline and budget is agreed upfront."
+      },
+      {
+        "t": "Quality",
+        "d": "Clean code, tests and code review on every release."
+      },
+      {
+        "t": "Speed",
+        "d": "Short iterations — you see results in weeks, not months."
+      },
+      {
+        "t": "Partnership",
+        "d": "We stay by your side after launch: support and growth."
+      }
+    ],
+    "teamTitle": "Team",
+    "teamLabel": "03 — People",
+    "ctaBand": "Let’s work together",
+    "ctaContact": "Get in touch"
+  },
+  "services": {
+    "label": "03 — What we do",
+    "title": "Services",
+    "intro": "Six disciplines, one team — the full cycle from idea to launch and ongoing support.",
+    "processTitle": "Process",
+    "processLabel": "07 — How we work",
+    "steps": [
+      {
+        "t": "Discovery",
+        "d": "Goals, users and requirements."
+      },
+      {
+        "t": "Design",
+        "d": "Prototype and visual system."
+      },
+      {
+        "t": "Development",
+        "d": "Short sprints, tests and demos."
+      },
+      {
+        "t": "Launch",
+        "d": "Release, monitoring and growth."
+      }
+    ],
+    "ctaBand": "Have an idea? Let’s begin",
+    "ctaContact": "Start a project"
+  },
+  "projects": {
+    "label": "04 — Work",
+    "title": "Projects",
+    "intro": "Selected projects — websites, mobile apps and AI solutions.",
+    "filterLabel": "Filter",
+    "filters": {
+      "all": "All",
+      "web": "Web",
+      "mobile": "Mobile",
+      "ai": "AI"
+    },
+    "emptyTitle": "Soon",
+    "emptyText": "Projects will be added soon.",
+    "emptyCta": "Get in touch",
+    "error": "Could not load projects. Please try again later.",
+    "ctaBand": "Your project is next",
+    "ctaContact": "Get in touch"
+  },
+  "contact": {
+    "label": "05 — Let’s talk",
+    "title": "Contact",
+    "intro": "Tell us about your project — we reply within 24 hours.",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "hours": "Working hours",
+    "social": "Social",
+    "office": "Office",
+    "mapLabel": "Map — {address}"
+  },
+  "form": {
+    "name": "Name",
+    "namePh": "Your name",
+    "email": "Email",
+    "subject": "Subject",
+    "optional": "(optional)",
+    "subjectPh": "e.g. a website",
+    "message": "Message",
+    "messagePh": "Tell us about your project",
+    "submit": "Send",
+    "sending": "Sending…",
+    "success": "Thank you! Your message was received — we’ll reply soon.",
+    "error": "Sending failed. Please check the fields and try again.",
+    "honeypot": "Leave this field empty",
+    "errors": {
+      "nameRequired": "Please enter your name.",
+      "emailRequired": "Please enter your email.",
+      "emailInvalid": "Email format is invalid.",
+      "messageRequired": "Please enter a message.",
+      "messageShort": "Message is too short.",
+      "tooLong": "Text is too long."
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  }
+}

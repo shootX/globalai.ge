@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Requests\Admin;
+
+use App\Models\Project;
+use App\Support\TranslatableRules;
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpsertProjectRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return $this->user() !== null;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function rules(): array
+    {
+        $project = $this->route('project');
+
+        return [
+            ...TranslatableRules::text('title', required: true, max: 255),
+            ...TranslatableRules::text('summary', required: false, max: 1000),
+            ...TranslatableRules::text('body', required: false, max: 20000),
+            ...TranslatableRules::text('category', required: false, max: 255),
+            ...TranslatableRules::text('seo_title', required: false, max: 255),
+            ...TranslatableRules::text('seo_description', required: false, max: 320),
+            ...TranslatableRules::slug('projects', $project instanceof Project ? $project->id : null),
+            'cover_image' => ['sometimes', 'nullable', 'string', 'max:2048'],
+            'gallery' => ['sometimes', 'nullable', 'array', 'max:30'],
+            'gallery.*' => ['string', 'max:2048'],
+            'sort_order' => ['sometimes', 'integer', 'min:0', 'max:100000'],
+            'is_published' => ['sometimes', 'boolean'],
+        ];
+    }
+}

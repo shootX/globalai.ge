@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* shadcn/ui variables mapped to the editorial tokens (accent #FF3A17, ink #15233B, bg #F2F2F0, panel #E8E8E5, secondary #3D4A5C, divider #D4D4D0). */
+@theme inline {
+  --color-background: #F2F2F0;
+  --color-foreground: #15233B;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #15233B;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #15233B;
+  --color-primary: #15233B;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #E8E8E5;
+  --color-secondary-foreground: #15233B;
+  --color-muted: #E8E8E5;
+  --color-muted-foreground: #3D4A5C;
+  --color-accent: #E8E8E5;
+  --color-accent-foreground: #15233B;
+  --color-brand: #FF3A17;
+  --color-brand-text: #C8290B;
+  --color-destructive: #C8290B;
+  --color-border: #D4D4D0;
+  --color-input: #D4D4D0;
+  --color-ring: #FF3A17;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --font-sans: var(--font-ka), sans-serif;
+  --font-mono: var(--font-sg), sans-serif;
+}
+
+body { background: #F2F2F0; color: #15233B; font-family: var(--font-ka), sans-serif; }
+*, ::before, ::after { border-color: #D4D4D0; }
+.micro { font-family: var(--font-sg), sans-serif; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 500; }

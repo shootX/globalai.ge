@@ -1,0 +1,146 @@
+<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>პროექტები — globalAI.GE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F2F0;--panel:#E8E8E5;--ink:#15233B;--red:#FF3A17;--red2:#F23005;--grey:#3D4A5C;--line:#D4D4D0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Georgian',sans-serif}
+a{color:inherit;text-decoration:none}
+.m{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.wrap{max-width:1320px;margin:0 auto;padding:0 40px}
+header{position:sticky;top:0;z-index:10;background:rgba(242,242,240,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;height:72px;gap:32px}.hd>.m{white-space:nowrap}@media(max-width:700px){.hd{gap:16px}.hd>span.m:not(.lang){display:none}}
+.logo{display:inline-flex;align-items:center;line-height:0}.logo img{display:block;height:30px;width:auto}.logo-chip{display:inline-block;background:#fff;padding:10px 14px;border-radius:10px;line-height:0}.logo-chip img{display:block;height:30px;width:auto}
+nav{display:flex;gap:28px;margin-left:auto}nav a{font-size:13px;font-weight:500}nav a.on{position:relative}nav a.on:after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--red)}
+.lang{display:flex;gap:10px}.lang a{color:var(--grey)}.lang a.on{color:var(--ink);font-weight:700}
+.cta-h{background:var(--ink);color:#fff;padding:10px 16px;font-size:12px}
+.burger{width:28px;display:grid;gap:6px;background:none;border:0;cursor:pointer}.burger i{height:1.5px;background:var(--ink);display:block}
+.hero{position:relative;min-height:760px;padding-top:60px;overflow:hidden}
+.blob{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#E2E2DE 70%);box-shadow:0 30px 60px rgba(21,35,59,.06)}
+.orb{position:absolute;left:50%;top:90px;transform:translateX(-50%);width:420px;height:420px;border-radius:50%;
+background:radial-gradient(circle at 32% 28%,#6b7385 0,#2a3346 30%,#15233B 55%,#05080f 100%);box-shadow:0 60px 80px -30px rgba(21,35,59,.55)}
+.orb:before{content:'';position:absolute;width:150px;height:150px;border-radius:50%;right:40px;top:60px;background:radial-gradient(circle,var(--red) 0,rgba(255,58,23,.55) 40%,transparent 70%);filter:blur(6px);mix-blend-mode:screen}
+.orb:after{content:'';position:absolute;inset:-40px;border-radius:50%;border:1px solid rgba(21,35,59,.15)}
+.ring{position:absolute;left:50%;top:40px;transform:translateX(-50%);width:540px;height:540px;border-radius:50%;border:1px dashed #C9C9C4}
+.redcard{position:absolute;left:calc(50% + 120px);top:150px;width:230px;background:var(--red);color:#fff;padding:18px;box-shadow:0 20px 40px rgba(255,58,23,.3)}
+.redcard .m{font-size:10px;line-height:1.6}
+.redcard a{display:flex;justify-content:space-between;align-items:center;background:var(--ink);margin-top:34px;padding:12px 14px;font-weight:600;font-size:14px}
+.prev{position:absolute;left:40px;top:150px;width:210px}
+.thumb{display:flex;height:90px;background:linear-gradient(135deg,#9aa0a8,#3b4252)}.thumb span{margin-left:auto;width:70px;background:var(--red);display:grid;place-items:center;color:#fff;font-size:22px}
+.dots{display:flex;gap:14px;margin-top:70px}.dots i{width:5px;height:5px;border-radius:50%;background:#B8B8B3}.dots i.on{background:var(--red)}
+h1{position:absolute;left:40px;bottom:70px;font-size:120px;font-weight:900;letter-spacing:-.04em;line-height:.95}
+h1 em{color:var(--red);font-style:normal}
+.sec2{position:absolute;left:44px;bottom:30px;display:flex;gap:28px;align-items:center}
+.sec2 a{font-size:14px;font-weight:600;border-bottom:1.5px solid var(--ink);padding-bottom:2px}
+.cols{position:absolute;right:40px;top:150px;width:230px;display:grid;gap:30px}.cols p{font-size:10px;line-height:1.7;color:var(--grey)}.cols b{color:var(--ink)}
+.idx{position:absolute;right:20px;top:330px;writing-mode:vertical-rl;font-family:'Space Grotesk';font-size:13px;letter-spacing:.2em}
+.down{position:absolute;right:0;bottom:0;width:72px;height:90px;background:var(--red);color:#fff;display:grid;place-items:center;font-size:24px}
+section{padding:110px 0;border-top:1px solid var(--line)}
+.sh{display:flex;justify-content:space-between;align-items:end;margin-bottom:50px}
+h2{font-size:56px;font-weight:900;letter-spacing:-.03em;line-height:1}h2 em{color:var(--red);font-style:normal}
+.svc{display:grid;grid-template-columns:1fr 1fr;column-gap:60px}
+.svc div{display:grid;grid-template-columns:90px 1fr 30px;align-items:center;padding:28px 0;border-top:1px solid var(--line)}
+.svc .n{font-family:'Space Grotesk';font-size:38px;font-weight:700;color:#C4C4BF}.svc h3{font-size:20px;font-weight:700}.svc p{font-size:13px;color:var(--grey);margin-top:4px}.svc .ar{color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--ink);color:#fff}
+.stats div{padding:56px 40px;border-right:1px solid rgba(255,255,255,.12)}.stats b{font-family:'Space Grotesk';font-size:72px;font-weight:700;display:block;letter-spacing:-.03em}.stats b i{color:var(--red);font-style:normal}.stats .m{opacity:.6}
+.pj{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pj article .img{height:300px;position:relative;filter:grayscale(1)}
+.pj .tag{position:absolute;left:16px;top:16px;background:var(--red);color:#fff;padding:6px 10px}
+.pj h3{font-size:20px;margin-top:18px}.pj .m{color:var(--grey);margin-top:6px}
+.soon{margin-top:30px;padding:22px 26px;border:1px dashed #BDBDB8;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:80px}.ab p{font-size:19px;line-height:1.7}
+.btn{display:inline-flex;gap:30px;margin-top:30px;background:var(--ink);color:#fff;padding:16px 22px;font-weight:600;font-size:14px}
+.ct{display:grid;grid-template-columns:1fr 1.2fr;gap:80px}
+form{display:grid;gap:22px}label{display:block;margin-bottom:8px}
+input,textarea{width:100%;font:inherit;font-size:15px;border:0;border-bottom:1.5px solid var(--ink);background:transparent;padding:10px 0;outline:none}
+textarea{min-height:110px;resize:vertical}
+button[type=submit]{justify-self:start;background:var(--red);color:#fff;border:0;padding:18px 28px;font:600 15px 'Noto Sans Georgian';cursor:pointer;display:flex;gap:40px}
+.ci p{margin-top:18px;font-size:15px}
+footer{background:var(--ink);color:#fff;padding:60px 0 30px}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}.ft a{display:block;font-size:14px;opacity:.75;margin-top:10px}
+.big{font-size:150px;font-weight:900;letter-spacing:-.05em;line-height:1;margin:50px 0 20px}.big b{color:var(--red)}
+.cp{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.15);padding-top:20px;opacity:.6}
+@media(max-width:760px){
+.wrap{padding:0 20px}nav,.cta-h{display:none}.lang{margin-left:auto}
+.hero{min-height:900px;padding-top:0}.ring{width:340px;height:340px;top:150px}.orb{width:260px;height:260px;top:190px}
+.prev{left:20px;top:30px;width:160px}.thumb{height:64px}.dots{margin-top:16px}
+.redcard{left:auto;right:20px;top:420px;width:200px}.cols{display:none}.idx{top:40px;right:14px}
+h1{font-size:44px;left:20px;bottom:130px}.sec2{left:20px;bottom:40px;flex-direction:column;align-items:flex-start;gap:16px}.down{width:56px;height:70px}
+section{padding:70px 0}h2{font-size:36px}.sh{flex-direction:column;align-items:flex-start;gap:12px}
+.svc,.pj,.ab,.ct,.ft{grid-template-columns:1fr;gap:28px}.svc div{grid-template-columns:60px 1fr 20px}.svc .n{font-size:28px}
+.stats{grid-template-columns:1fr 1fr}.stats div{padding:32px 20px}.stats b{font-size:44px}.big{font-size:60px}.cp{flex-direction:column;gap:8px}}
+
+.ph{position:relative;padding:90px 0 80px;overflow:hidden}
+.ph h1{position:static;font-size:128px;margin-top:22px}
+.ph .intro{max-width:560px;font-size:19px;line-height:1.6;color:var(--grey);margin-top:28px}
+.ph .blob{z-index:-1}
+.mis{display:grid;grid-template-columns:1.1fr 1fr;gap:80px}.mis .st{font-size:44px;font-weight:900;line-height:1.15;letter-spacing:-.02em}.mis p{font-size:17px;line-height:1.75;color:#333b48}.mis p+p{margin-top:18px}
+.vals{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.vals div{padding:34px 28px 10px 0;border-right:1px solid var(--line);margin-right:28px}.vals div:last-child{border:0}
+.vals .n{font-family:'Space Grotesk';font-size:44px;font-weight:700;color:var(--red)}.vals h3{font-size:21px;margin:18px 0 10px}.vals p{font-size:14px;line-height:1.65;color:var(--grey)}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.team .av{aspect-ratio:4/5;background:radial-gradient(circle at 50% 38%,#d6d6d2 0 18%,transparent 19%),radial-gradient(ellipse at 50% 100%,#8d8d89 0 45%,transparent 46%),linear-gradient(170deg,#E8E8E5,#bdbdb8);filter:grayscale(1);position:relative}
+.team .av span{position:absolute;left:14px;top:14px;color:var(--ink)}
+.team h3{font-size:19px;margin-top:16px}.team .m{color:var(--grey);margin-top:6px;display:block}
+.ctab{background:var(--red);color:#fff}.ctab .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:80px;padding-bottom:80px;gap:30px}
+.ctab h2{font-size:64px;color:#fff}.ctab h2 em{color:var(--ink)}.ctab .btn{margin:0}
+.srow{display:grid;grid-template-columns:160px 1fr 1.1fr 260px;gap:40px;padding:48px 0;border-top:1px solid var(--line);align-items:start}
+.srow:last-child{border-bottom:1px solid var(--line)}
+.srow .n{font-family:'Space Grotesk';font-size:84px;font-weight:700;line-height:.9;color:#C4C4BF}.srow:hover .n{color:var(--red)}
+.srow h3{font-size:32px;font-weight:900;letter-spacing:-.02em;line-height:1.1}.srow p{font-size:16px;line-height:1.7;color:#333b48}
+.srow ul{list-style:none}.srow li{font-family:'Space Grotesk';font-size:13px;padding:9px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.srow li:after{content:'+';color:var(--red)}
+.proc{display:grid;grid-template-columns:repeat(4,1fr);background:var(--panel)}
+.proc div{padding:44px 32px;border-right:1px solid var(--line);position:relative}.proc div:last-child{border:0}
+.proc .n{font-family:'Space Grotesk';font-size:15px;font-weight:700;color:var(--red)}.proc h3{font-size:24px;font-weight:900;margin:40px 0 10px}.proc p{font-size:14px;color:var(--grey);line-height:1.6}
+.proc div:not(:last-child):after{content:'→';position:absolute;right:-10px;top:42px;background:var(--panel);color:var(--red);font-size:18px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}.chips a{border:1px solid var(--ink);padding:10px 18px}.chips a.on{background:var(--red);border-color:var(--red);color:#fff}
+.pj{row-gap:48px}.pj p.d{font-size:14px;color:var(--grey);margin-top:6px}
+.slabel{display:inline-block;background:var(--ink);color:#fff;padding:6px 10px;margin-bottom:20px}
+.empty{border:1.5px dashed #A9A9A4;background:repeating-linear-gradient(45deg,transparent 0 14px,rgba(21,35,59,.025) 14px 28px);padding:90px 30px;text-align:center}
+.empty .dot{width:74px;height:74px;border-radius:50%;margin:0 auto 26px;background:radial-gradient(circle at 35% 30%,#fff,#d6d6d2 70%);display:grid;place-items:center;color:var(--red);font-size:26px}
+.empty h3{font-size:44px;font-weight:900;letter-spacing:-.02em}.empty h3 em{color:var(--red);font-style:normal}.empty p{color:var(--grey);margin-top:12px;font-size:16px}
+.empty .btn{background:var(--red)}
+.ct2{display:grid;grid-template-columns:1fr 1.25fr;gap:90px}
+.info div{padding:24px 0;border-top:1px solid var(--line)}.info .m{color:var(--grey)}.info p{font-size:20px;font-weight:600;margin-top:8px}.info p.s{font-size:15px;font-weight:500;display:flex;gap:22px}
+form .row2{display:grid;grid-template-columns:1fr 1fr;gap:28px}label .opt{color:var(--grey);text-transform:none;letter-spacing:0}
+.map{height:420px;position:relative;overflow:hidden;background:
+linear-gradient(90deg,transparent 49.6%,#fff 49.6% 50.4%,transparent 50.4%) 0 0/220px 100%,
+linear-gradient(0deg,transparent 49%,#fff 49% 51%,transparent 51%) 0 0/100% 160px,
+linear-gradient(28deg,transparent 49.5%,#cfcfca 49.5% 50.5%,transparent 50.5%),#DCDCD8}
+.map:before{content:'';position:absolute;left:-5%;right:-5%;top:58%;height:22px;background:#c9c9c4;transform:rotate(-8deg)}
+.pin{position:absolute;left:52%;top:34%;width:46px;height:46px;background:var(--red);border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 14px 26px rgba(255,58,23,.4)}
+.pin:after{content:'';position:absolute;inset:15px;border-radius:50%;background:#fff}
+.mapcard{position:absolute;left:40px;bottom:40px;background:var(--ink);color:#fff;padding:20px 24px}.mapcard b{display:block;font-size:17px;margin-top:6px}
+.mapwrap{position:relative}
+@media(max-width:760px){
+.ph{padding:50px 0 50px}.ph h1{font-size:44px;overflow-wrap:anywhere}h2{overflow-wrap:anywhere}.sh h2{font-size:32px}.ph .intro{font-size:16px}
+.mis,.ct2{grid-template-columns:1fr;gap:28px}.mis .st{font-size:28px}
+.vals,.team,.proc{grid-template-columns:1fr 1fr}.vals{gap:0 16px}.vals div{border:0;margin:0 !important;padding:26px 0 0;min-width:0}.vals .n{font-size:32px}
+.team{gap:16px}.ctab .wrap{flex-direction:column;align-items:flex-start;padding-top:56px;padding-bottom:56px}.ctab h2{font-size:38px}
+.srow{grid-template-columns:1fr;gap:14px;padding:34px 0}.srow .n{font-size:52px}.srow h3{font-size:26px}
+.proc div{padding:28px 18px}.proc h3{font-size:19px;margin:22px 0 8px}.proc div:after{display:none}
+.empty{padding:56px 20px}.empty h3{font-size:30px}form .row2{grid-template-columns:1fr;gap:22px}
+.map{height:300px}.mapcard{left:20px;bottom:20px}.info p{font-size:17px}}
+</style></head><body>
+<header><div class="wrap hd">
+<a class="logo" href="homepage-editorial.html" data-testid="logo"><img src="assets/globalai-logo-clean.png" alt="globalAI.GE" data-testid="logo-img"></a>
+<span class="m" style="color:var(--grey)">— 04</span>
+<nav><a href="homepage-editorial.html" data-testid="nav-home">მთავარი</a><a href="about.html" data-testid="nav-about">ჩვენ შესახებ</a><a href="services.html" data-testid="nav-services">სერვისები</a><a class="on" aria-current="page" href="projects.html" data-testid="nav-projects">პროექტები</a><a href="contact.html" data-testid="nav-contact">კონტაქტი</a></nav>
+<div class="lang m"><a class="on" href="#" data-testid="lang-ka" aria-current="true">KA</a><a href="#" data-testid="lang-en">EN</a><a href="#" data-testid="lang-ru">RU</a></div>
+<a class="cta-h m" href="contact.html" data-testid="cta-header">დაგვიკავშირდით</a>
+<button class="burger" aria-label="მენიუ" data-testid="menu-toggle"><i></i><i></i></button>
+</div></header>
+<main><div class="wrap ph" data-testid="projects-hero">
+<div class="blob" style="width:300px;height:300px;right:6%;top:40px"></div><div class="blob" style="width:110px;height:110px;right:30%;top:220px"></div>
+<span class="m" style="color:var(--grey)">04 — ნამუშევრები</span>
+<h1>პროექტები<em>.</em></h1><p class="intro">შერჩეული პროექტები — ვებ-საიტები, მობილური აპები და AI გადაწყვეტილებები.</p></div><section style="border:0;padding-top:20px" data-testid="projects-list"><div class="wrap"><div class="chips m" role="group" aria-label="ფილტრი"><a class="on" href="#" data-testid="filter-all" aria-pressed="true">ყველა</a><a href="#" data-testid="filter-web">ვები</a><a href="#" data-testid="filter-mobile">მობილური</a><a href="#" data-testid="filter-ai">AI</a></div><div class="pj"><article data-testid="project-0"><div class="img" style="background:radial-gradient(circle at 70% 40%,#fff 0,#9a9a96 35%,#2b2b2b 100%)"><span class="tag m">AI</span></div><h3>სმარტ ასისტენტი</h3><p class="d">AI ჩატბოტი კლიენტების მომსახურებისთვის.</p></article><article data-testid="project-1"><div class="img" style="background:linear-gradient(160deg,#d9d9d5,#5f5f5c)"><span class="tag m">მობილური</span></div><h3>მიწოდების აპი</h3><p class="d">შეკვეთა და კურიერის ტრეკინგი რეალურ დროში.</p></article><article data-testid="project-2"><div class="img" style="background:repeating-linear-gradient(90deg,#3a3a3a 0 40px,#bdbdb9 40px 80px)"><span class="tag m">ვები</span></div><h3>კორპორატიული პორტალი</h3><p class="d">შიდა პორტალი Next.js-სა და Laravel-ზე.</p></article><article data-testid="project-3"><div class="img" style="background:radial-gradient(circle at 30% 70%,#e9e9e6 0 20%,#7a7a76 21% 45%,#333 46%)"><span class="tag m">AI</span></div><h3>დოკუმენტების ანალიზი</h3><p class="d">ინვოისების ავტომატური დამუშავება.</p></article><article data-testid="project-4"><div class="img" style="background:linear-gradient(0deg,#2f2f2f 0 35%,#cfcfcb 35% 100%)"><span class="tag m">ვები</span></div><h3>ონლაინ მაღაზია</h3><p class="d">ელ-კომერცია გადახდებითა და ადმინ-პანელით.</p></article><article data-testid="project-5"><div class="img" style="background:conic-gradient(from 45deg at 60% 50%,#8a8a86,#e2e2de,#4a4a48,#8a8a86)"><span class="tag m">მობილური</span></div><h3>ფიტნეს აპი</h3><p class="d">ვარჯიშის გეგმები და პროგრესის ანალიტიკა.</p></article></div></div></section><section data-testid="projects-empty-section"><div class="wrap"><span class="slabel m">მდგომარეობა: ცარიელი სია (meta.total === 0)</span><p class="m" style="color:var(--grey);margin-bottom:24px">ეს ბლოკი ჩანს მაშინ, როცა პროექტები ჯერ არ არის დამატებული — ბადისა და ფილტრების ნაცვლად.</p>
+<div class="empty" data-testid="projects-empty"><div class="dot">●</div><h3>მალე<em>.</em></h3><p>პროექტები მალე დაემატება.</p><a class="btn" href="contact.html" data-testid="projects-empty-cta">დაგვიკავშირდით <span>→</span></a></div></div></section><div class="ctab" data-testid="cta-band"><div class="wrap"><h2>თქვენი პროექტი შემდეგია<em>.</em></h2><a class="btn" href="contact.html" data-testid="cta-projects-contact">დაგვიკავშირდით <span>→</span></a></div></div></main>
+<footer><div class="wrap">
+<div class="ft"><div><span class="logo-chip" data-testid="footer-logo"><img src="assets/globalai-logo-clean.png" alt="globalAI.GE"></span><p style="opacity:.7;margin-top:14px;font-size:14px">თბილისი, რუსთაველის გამზ. 1, საქართველო</p></div>
+<div><span class="m">მენიუ</span><a href="homepage-editorial.html">მთავარი</a><a href="about.html">ჩვენ შესახებ</a><a href="services.html">სერვისები</a></div>
+<div><span class="m">ბმულები</span><a href="projects.html">პროექტები</a><a href="contact.html">კონტაქტი</a></div>
+<div><span class="m">სოციალური</span><a href="#">Facebook</a><a href="#">LinkedIn</a><a href="#">Instagram</a></div></div>
+
+<div class="cp m"><span>© 2026 globalAI.GE — ყველა უფლება დაცულია</span><span>თბილისი · საქართველო</span></div>
+</div></footer></body></html>

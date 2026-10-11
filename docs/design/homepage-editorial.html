@@ -1,0 +1,134 @@
+<!doctype html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>globalAI.GE — ციფრული პროდუქტები</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F2F0;--panel:#E8E8E5;--ink:#15233B;--red:#FF3A17;--red2:#F23005;--grey:#3D4A5C;--line:#D4D4D0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Noto Sans Georgian',sans-serif}
+a{color:inherit;text-decoration:none}
+.m{font-family:'Space Grotesk',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.wrap{max-width:1320px;margin:0 auto;padding:0 40px}
+header{position:sticky;top:0;z-index:10;background:rgba(242,242,240,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;height:72px;gap:32px}.hd>.m{white-space:nowrap}@media(max-width:700px){.hd{gap:16px}.hd>span.m:not(.lang){display:none}}
+.logo{display:inline-flex;align-items:center;line-height:0}.logo img{display:block;height:30px;width:auto}.logo-chip{display:inline-block;background:#fff;padding:10px 14px;border-radius:10px;line-height:0}.logo-chip img{display:block;height:30px;width:auto}
+nav{display:flex;gap:28px;margin-left:auto}nav a{font-size:13px;font-weight:500}nav a.on{position:relative}nav a.on:after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--red)}
+.lang{display:flex;gap:10px}.lang a{color:var(--grey)}.lang a.on{color:var(--ink);font-weight:700}
+.cta-h{background:var(--ink);color:#fff;padding:10px 16px;font-size:12px}
+.burger{width:28px;display:grid;gap:6px;background:none;border:0;cursor:pointer}.burger i{height:1.5px;background:var(--ink);display:block}
+.hero{position:relative;min-height:760px;padding-top:60px;overflow:hidden}
+.blob{position:absolute;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#E2E2DE 70%);box-shadow:0 30px 60px rgba(21,35,59,.06)}
+.orb{position:absolute;left:50%;top:90px;transform:translateX(-50%);width:420px;height:420px;border-radius:50%;
+background:radial-gradient(circle at 32% 28%,#6b7385 0,#2a3346 30%,#15233B 55%,#05080f 100%);box-shadow:0 60px 80px -30px rgba(21,35,59,.55)}
+.orb:before{content:'';position:absolute;width:150px;height:150px;border-radius:50%;right:40px;top:60px;background:radial-gradient(circle,var(--red) 0,rgba(255,58,23,.55) 40%,transparent 70%);filter:blur(6px);mix-blend-mode:screen}
+.orb:after{content:'';position:absolute;inset:-40px;border-radius:50%;border:1px solid rgba(21,35,59,.15)}
+.ring{position:absolute;left:50%;top:40px;transform:translateX(-50%);width:540px;height:540px;border-radius:50%;border:1px dashed #C9C9C4}
+.redcard{position:absolute;left:calc(50% + 120px);top:150px;width:230px;background:var(--red);color:#fff;padding:18px;box-shadow:0 20px 40px rgba(255,58,23,.3)}
+.redcard .m{font-size:10px;line-height:1.6}
+.redcard a{display:flex;justify-content:space-between;align-items:center;background:var(--ink);margin-top:34px;padding:12px 14px;font-weight:600;font-size:14px}
+.prev{position:absolute;left:40px;top:150px;width:210px}
+.thumb{display:flex;height:90px;background:linear-gradient(135deg,#9aa0a8,#3b4252)}.thumb span{margin-left:auto;width:70px;background:var(--red);display:grid;place-items:center;color:#fff;font-size:22px}
+.dots{display:flex;gap:14px;margin-top:70px}.dots i{width:5px;height:5px;border-radius:50%;background:#B8B8B3}.dots i.on{background:var(--red)}
+h1{position:absolute;left:40px;bottom:70px;font-size:120px;font-weight:900;letter-spacing:-.04em;line-height:.95}
+h1 em{color:var(--red);font-style:normal}
+.sec2{position:absolute;left:44px;bottom:30px;display:flex;gap:28px;align-items:center}
+.sec2 a{font-size:14px;font-weight:600;border-bottom:1.5px solid var(--ink);padding-bottom:2px}
+.cols{position:absolute;right:40px;top:150px;width:230px;display:grid;gap:30px}.cols p{font-size:10px;line-height:1.7;color:var(--grey)}.cols b{color:var(--ink)}
+.idx{position:absolute;right:20px;top:330px;writing-mode:vertical-rl;font-family:'Space Grotesk';font-size:13px;letter-spacing:.2em}
+.down{position:absolute;right:0;bottom:0;width:72px;height:90px;background:var(--red);color:#fff;display:grid;place-items:center;font-size:24px}
+section{padding:110px 0;border-top:1px solid var(--line)}
+.sh{display:flex;justify-content:space-between;align-items:end;margin-bottom:50px}
+h2{font-size:56px;font-weight:900;letter-spacing:-.03em;line-height:1}h2 em{color:var(--red);font-style:normal}
+.svc{display:grid;grid-template-columns:1fr 1fr;column-gap:60px}
+.svc div{display:grid;grid-template-columns:90px 1fr 30px;align-items:center;padding:28px 0;border-top:1px solid var(--line)}
+.svc .n{font-family:'Space Grotesk';font-size:38px;font-weight:700;color:#C4C4BF}.svc h3{font-size:20px;font-weight:700}.svc p{font-size:13px;color:var(--grey);margin-top:4px}.svc .ar{color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--ink);color:#fff}
+.stats div{padding:56px 40px;border-right:1px solid rgba(255,255,255,.12)}.stats b{font-family:'Space Grotesk';font-size:72px;font-weight:700;display:block;letter-spacing:-.03em}.stats b i{color:var(--red);font-style:normal}.stats .m{opacity:.6}
+.pj{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.pj article .img{height:300px;position:relative;filter:grayscale(1)}
+.pj .tag{position:absolute;left:16px;top:16px;background:var(--red);color:#fff;padding:6px 10px}
+.pj h3{font-size:20px;margin-top:18px}.pj .m{color:var(--grey);margin-top:6px}
+.soon{margin-top:30px;padding:22px 26px;border:1px dashed #BDBDB8;display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:80px}.ab p{font-size:19px;line-height:1.7}
+.btn{display:inline-flex;gap:30px;margin-top:30px;background:var(--ink);color:#fff;padding:16px 22px;font-weight:600;font-size:14px}
+.ct{display:grid;grid-template-columns:1fr 1.2fr;gap:80px}
+form{display:grid;gap:22px}label{display:block;margin-bottom:8px}
+input,textarea{width:100%;font:inherit;font-size:15px;border:0;border-bottom:1.5px solid var(--ink);background:transparent;padding:10px 0;outline:none}
+textarea{min-height:110px;resize:vertical}
+button[type=submit]{justify-self:start;background:var(--red);color:#fff;border:0;padding:18px 28px;font:600 15px 'Noto Sans Georgian';cursor:pointer;display:flex;gap:40px}
+.ci p{margin-top:18px;font-size:15px}
+footer{background:var(--ink);color:#fff;padding:60px 0 30px}
+.ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}.ft a{display:block;font-size:14px;opacity:.75;margin-top:10px}
+.big{font-size:150px;font-weight:900;letter-spacing:-.05em;line-height:1;margin:50px 0 20px}.big b{color:var(--red)}
+.cp{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.15);padding-top:20px;opacity:.6}
+@media(max-width:760px){
+.wrap{padding:0 20px}nav,.cta-h{display:none}.lang{margin-left:auto}
+.hero{min-height:900px;padding-top:0}.ring{width:340px;height:340px;top:150px}.orb{width:260px;height:260px;top:190px}
+.prev{left:20px;top:30px;width:160px}.thumb{height:64px}.dots{margin-top:16px}
+.redcard{left:auto;right:20px;top:420px;width:200px}.cols{display:none}.idx{top:40px;right:14px}
+h1{font-size:44px;left:20px;bottom:130px}.sec2{left:20px;bottom:40px;flex-direction:column;align-items:flex-start;gap:16px}.down{width:56px;height:70px}
+section{padding:70px 0}h2{font-size:36px}.sh{flex-direction:column;align-items:flex-start;gap:12px}
+.svc,.pj,.ab,.ct,.ft{grid-template-columns:1fr;gap:28px}.svc div{grid-template-columns:60px 1fr 20px}.svc .n{font-size:28px}
+.stats{grid-template-columns:1fr 1fr}.stats div{padding:32px 20px}.stats b{font-size:44px}.big{font-size:60px}.cp{flex-direction:column;gap:8px}}
+</style></head><body>
+<header><div class="wrap hd">
+<a class="logo" href="/" data-testid="logo"><img src="assets/globalai-logo-clean.png" alt="globalAI.GE" data-testid="logo-img"></a>
+<span class="m" style="color:var(--grey)">— 01</span>
+<nav><a class="on" href="#" data-testid="nav-home">მთავარი</a><a href="#about" data-testid="nav-about">ჩვენ შესახებ</a><a href="#services" data-testid="nav-services">სერვისები</a><a href="#projects" data-testid="nav-projects">პროექტები</a><a href="#contact" data-testid="nav-contact">კონტაქტი</a></nav>
+<div class="lang m"><a class="on" href="#" data-testid="lang-ka" aria-current="true">KA</a><a href="#" data-testid="lang-en">EN</a><a href="#" data-testid="lang-ru">RU</a></div>
+<a class="cta-h m" href="#contact" data-testid="cta-header">დაგვიკავშირდით</a>
+<button class="burger" aria-label="მენიუ" data-testid="menu-toggle"><i></i><i></i></button>
+</div></header>
+<div class="wrap hero">
+<div class="blob" style="width:170px;height:170px;left:30%;top:60px"></div>
+<div class="blob" style="width:240px;height:240px;right:12%;bottom:120px"></div>
+<div class="blob" style="width:90px;height:90px;right:22%;bottom:300px"></div>
+<div class="ring"></div><div class="orb" role="img" aria-label="აბსტრაქტული სფერო"></div>
+<div class="prev"><div class="thumb"><span>▶</span></div><div class="m" style="margin-top:12px;font-size:10px"><b>შოურილი</b> · 2026 ნამუშევრები</div><div class="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<div class="redcard"><div class="m">AI სტუდია თბილისიდან<br>ვებ · მობაილი · AI</div><a href="#contact" data-testid="cta-hero-primary">პროექტის დაწყება <span>→</span></a></div>
+<div class="cols"><p class="m"><b>globalAI.GE</b><br>ციფრული პროდუქტები და AI გადაწყვეტილებები</p><p class="m"><b>ვქმნით</b><br>ვებ-საიტებს, აპებს და ჭკვიან აგენტებს თქვენი ბიზნესისთვის</p><p class="m"><b>პროცესი</b><br>კვლევა → დიზაინი → კოდი → გაშვება</p></div>
+<div class="idx">— 01</div>
+<h1>ციფრული<br>პროდუქტები<em>.</em></h1>
+<div class="sec2"><a href="#projects" data-testid="cta-hero-secondary">ნამუშევრების ნახვა</a><span class="m" style="color:var(--grey)">გადახვევა ქვემოთ ↓</span></div>
+<a class="down" href="#services" aria-label="ქვემოთ">↓</a>
+</div>
+<section id="services"><div class="wrap">
+<div class="sh"><h2>სერვისები<em>.</em></h2><span class="m" style="color:var(--grey)">02 — რას ვაკეთებთ</span></div>
+<div class="svc">
+<div><span class="n">01</span><span><h3>ვებ-დეველოპმენტი</h3><p>სწრაფი საიტები და ვებ-აპები Next.js-სა და Laravel-ზე.</p></span><span class="ar">→</span></div>
+<div><span class="n">02</span><span><h3>მობილური აპები</h3><p>iOS და Android ერთი Flutter კოდით.</p></span><span class="ar">→</span></div>
+<div><span class="n">03</span><span><h3>AI ინტეგრაცია</h3><p>ჩატბოტები, აგენტები და პროცესების ავტომატიზაცია.</p></span><span class="ar">→</span></div>
+<div><span class="n">04</span><span><h3>UX/UI დიზაინი</h3><p>კვლევაზე დაფუძნებული, სუფთა ინტერფეისები.</p></span><span class="ar">→</span></div>
+<div><span class="n">05</span><span><h3>Cloud და DevOps</h3><p>ინფრასტრუქტურა, CI/CD და მონიტორინგი.</p></span><span class="ar">→</span></div>
+<div><span class="n">06</span><span><h3>პროდუქტის სტრატეგია</h3><p>იდეიდან MVP-მდე — სწორი პრიორიტეტებით.</p></span><span class="ar">→</span></div>
+</div></div></section>
+<div class="stats"><div><b>50<i>+</i></b><span class="m">დასრულებული პროექტი</span></div><div><b>8</b><span class="m">წელი გამოცდილება</span></div><div><b>30<i>+</i></b><span class="m">კმაყოფილი კლიენტი</span></div><div><b>3</b><span class="m">ენა · KA EN RU</span></div></div>
+<section id="projects"><div class="wrap">
+<div class="sh"><h2>პროექტები<em>.</em></h2><span class="m" style="color:var(--grey)">03 — შერჩეული ნამუშევრები</span></div>
+<div class="pj">
+<article data-testid="project-0"><div class="img" style="background:radial-gradient(circle at 70% 40%,#fff 0,#9a9a96 35%,#2b2b2b 100%)"><span class="tag m">AI</span></div><h3>სმარტ ასისტენტი</h3><p class="m">AI ჩატბოტი · ვებ</p></article>
+<article data-testid="project-1"><div class="img" style="background:linear-gradient(160deg,#d9d9d5,#5f5f5c)"><span class="tag m">მობაილი</span></div><h3>მიწოდების აპი</h3><p class="m">Flutter · iOS / Android</p></article>
+<article data-testid="project-2"><div class="img" style="background:repeating-linear-gradient(90deg,#3a3a3a 0 40px,#bdbdb9 40px 80px)"><span class="tag m">ვებ</span></div><h3>კორპორატიული პორტალი</h3><p class="m">Next.js · Laravel</p></article>
+</div>
+<div class="soon"><span><b style="color:var(--red)">●</b> ახალი პროექტები <b>მალე</b> დაემატება.</span><a href="#contact" class="m">დაგვიკავშირდით →</a></div>
+</div></section>
+<section id="about"><div class="wrap ab">
+<div><span class="m" style="color:var(--grey)">04 — ჩვენ შესახებ</span><h2 style="margin-top:16px">ტექნოლოგია,<br>რომელიც მუშაობს<em>.</em></h2></div>
+<div><p>globalAI.GE არის თბილისური სტუდია, რომელიც აერთიანებს დიზაინერებს, დეველოპერებსა და AI სპეციალისტებს. ვქმნით პროდუქტებს, რომლებიც ბიზნესს ზრდის — იდეიდან გაშვებამდე.</p><a class="btn" href="#about" data-testid="cta-about">გაიგეთ მეტი <span>→</span></a></div>
+</div></section>
+<section id="contact"><div class="wrap ct">
+<div class="ci"><span class="m" style="color:var(--grey)">05 — კონტაქტი</span><h2 style="margin-top:16px">დავიწყოთ<br>საუბარი<em>.</em></h2><p>info@globalai.ge</p><p>+995 555 00 00 00</p><p>თბილისი, რუსთაველის გამზ. 1</p></div>
+<form data-testid="contact-form" onsubmit="return false">
+<div><label class="m" for="name">სახელი</label><input id="name" name="name" type="text" required placeholder="თქვენი სახელი" data-testid="contact-name"></div>
+<div><label class="m" for="email">ელ-ფოსტა</label><input id="email" name="email" type="email" required placeholder="name@example.com" data-testid="contact-email"></div>
+<div><label class="m" for="message">შეტყობინება</label><textarea id="message" name="message" required placeholder="მოგვიყევით პროექტის შესახებ" data-testid="contact-message"></textarea></div>
+<button type="submit" data-testid="contact-submit">გაგზავნა <span>→</span></button>
+</form></div></section>
+<footer><div class="wrap">
+<div class="ft"><div><span class="logo-chip" data-testid="footer-logo"><img src="assets/globalai-logo-clean.png" alt="globalAI.GE"></span><p style="opacity:.7;margin-top:14px;font-size:14px">თბილისი, რუსთაველის გამზ. 1, საქართველო</p></div>
+<div><span class="m">მენიუ</span><a href="#">მთავარი</a><a href="#about">ჩვენ შესახებ</a><a href="#services">სერვისები</a></div>
+<div><span class="m">ბმულები</span><a href="#projects">პროექტები</a><a href="#contact">კონტაქტი</a></div>
+<div><span class="m">სოციალური</span><a href="#">Facebook</a><a href="#">LinkedIn</a><a href="#">Instagram</a></div></div>
+
+<div class="cp m"><span>© 2026 globalAI.GE — ყველა უფლება დაცულია</span><span>თბილისი · საქართველო</span></div>
+</div></footer></body></html>
