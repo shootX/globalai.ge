@@ -2,7 +2,9 @@ import { storageUrl } from "@/lib/admin/storage";
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { getSettings, getTeam, getPageText } from "@/lib/api";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/page-seo";
+import { SITE_URL, localizedPath } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { resolveLocale, type LocaleParams } from "@/lib/locale-params";
 import { PageHero } from "@/components/page-hero";
 import { CtaBand } from "@/components/cta-band";
@@ -23,6 +25,15 @@ export default async function AboutPage({ params }: LocaleParams) {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          name: t("title"),
+          description: t("intro"),
+          url: `${SITE_URL}${localizedPath("/about", locale)}`,
+        }}
+      />
       <PageHero testId="about-hero" label={t("label")} title={t("title")} intro={t("intro")} />
       <section data-testid="about-mission">
         <div className="wrap mis">

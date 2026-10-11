@@ -15,8 +15,15 @@ import type { AdminLocale, ApiItem } from "@/lib/admin/types";
 import { FormFields } from "./form-fields";
 import { LocaleTabs } from "./locale-tabs";
 import { PageHeader } from "./page-header";
+import { SeoPreview, seoText } from "./seo-preview";
 import { StateBox } from "./state-box";
 import { SaveBar, type SaveState } from "./save-bar";
+import { adminOps } from "@/lib/admin/ops-copy";
+import { cn } from "@/lib/utils";
+import type { Translations } from "@/lib/admin/types";
+
+const ops = adminOps("ka");
+const SEO_FIELDS = new Set(["seo_title", "seo_description", "og_image", "noindex"]);
 
 type ResourceEditorProps = { resource: keyof typeof RESOURCES; id: string };
 
@@ -26,6 +33,7 @@ export function ResourceEditor({ resource, id }: ResourceEditorProps) {
   const router = useRouter();
   const qc = useQueryClient();
   const [locale, setLocale] = useState<AdminLocale>("ka");
+  const [section, setSection] = useState<"content" | "seo">("content");
   const [saveState, setSaveState] = useState<SaveState>({ kind: "idle" });
   const schema = useMemo(() => buildSchema(cfg.fields), [cfg.fields]);
 
@@ -122,9 +130,25 @@ export function ResourceEditor({ resource, id }: ResourceEditorProps) {
           className="grid max-w-3xl gap-8"
         >
           <LocaleTabs value={locale} onChange={setLocale} errored={errored} />
-          <div id="locale-panel" role="tabpanel" aria-labelledby={`tab-${locale}`}>
-            <FormFields fields={cfg.fields} locale={locale} register={register} control={control} errors={formState.errors} />
+          {cfg.fields.some((field) => SEO_FIELDS.has(field.name)) ? (
+            <div role="tablist" aria-label="სექცია" className="inline-flex w-fit border border-primary">
+              <button type="button" role="tab" data-testid="admin-section-content" aria-selected={section === "content"} className={cn("micro px-4 py-2.5", section === "content" ? "bg-primary text-primary-foreground" : "text-primary")} onClick={() => setSection("content")}>
+                {ops.contentTab}
+              </button>
+              <button type="button" role="tab" data-testid="admin-section-seo" aria-selected={section === "seo"} className={cn("micro px-4 py-2.5", section === "seo" ? "bg-primary text-primary-foreground" : "text-primary")} onClick={() => setSection("seo")}>
+                {ops.seoTab}
+              </button>
+            </div>
+          ) : null}
+          <div id="locale-panel" role="tabpanel" aria-labelledby={`tab-${locale}`} className={cn(section !== "content" && cfg.fields.some((field) => SEO_FIELDS.has(field.name)) && "hidden")}>
+            <FormFields fields={cfg.fields.filter((field) => !SEO_FIELDS.has(field.name))} locale={locale} register={register} control={control} errors={formState.errors} />
           </div>
+          {cfg.fields.some((field) => SEO_FIELDS.has(field.name)) ? (
+            <div className={cn("grid gap-6", section !== "seo" && "hidden")} data-testid="admin-seo-tab">
+              <FormFields fields={cfg.fields.filter((field) => SEO_FIELDS.has(field.name))} locale={locale} register={register} control={control} errors={formState.errors} />
+              <SeoPreview title={seoText(watched.seo_title as Translations | undefined, locale)} description={seoText(watched.seo_description as Translations | undefined, locale)} />
+            </div>
+          ) : null}
           <SaveBar state={saveState} />
         </form>
       ) : null}

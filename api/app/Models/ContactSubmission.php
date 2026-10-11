@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Database\Factories\ContactSubmissionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class ContactSubmission extends Model
 {
     /** @use HasFactory<ContactSubmissionFactory> */
-    use HasFactory;
+    use Auditable, HasFactory;
 
     public const STATUS_NEW = 'new';
 

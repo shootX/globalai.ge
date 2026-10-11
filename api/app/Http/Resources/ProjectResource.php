@@ -23,6 +23,7 @@ class ProjectResource extends JsonResource
             'category' => $this->translated('category'),
             'cover_image' => $this->cover_image,
             'sort_order' => $this->sort_order,
+            'noindex' => (bool) $this->noindex,
         ];
     }
 }

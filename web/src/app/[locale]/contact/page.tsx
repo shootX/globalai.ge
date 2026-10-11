@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getSettings, getPageText } from "@/lib/api";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/page-seo";
+import { SITE_URL, localizedPath } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { resolveLocale, type LocaleParams } from "@/lib/locale-params";
 import { PageHero } from "@/components/page-hero";
 import { ContactForm } from "@/components/contact-form";
@@ -17,6 +19,15 @@ export default async function ContactPage({ params }: LocaleParams) {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          name: t("title"),
+          description: t("intro"),
+          url: `${SITE_URL}${localizedPath("/contact", locale)}`,
+        }}
+      />
       <PageHero testId="contact-hero" label={t("label")} title={t("title")} intro={t("intro")} />
       <section style={{ paddingTop: 40 }} data-testid="contact-section">
         <div className="wrap ct2">

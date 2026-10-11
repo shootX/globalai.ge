@@ -9,6 +9,7 @@ import type {
   Project,
   ProjectDetail,
   Service,
+  ServiceDetail,
   Settings,
 } from "./api-types";
 import { mockPage, mockTeam, mockProjects, mockServices, mockSettings } from "./mocks";
@@ -41,6 +42,30 @@ const list = <T>(data: T[]): ApiList<T> => ({ data, meta: { total: data.length }
 
 export async function getServices(locale: Locale): Promise<ApiList<Service>> {
   return hasApi ? getJson<ApiList<Service>>("services", locale) : list(mockServices(locale));
+}
+
+export async function getService(slug: string, locale: Locale): Promise<ApiItem<ServiceDetail> | null> {
+  if (!hasApi) {
+    const row = mockServices(locale).find((item) => item.slug === slug);
+    if (!row) return null;
+    return {
+      data: {
+        ...row,
+        body: row.body ?? null,
+        seo_title: null,
+        seo_description: null,
+        og_image: null,
+        noindex: false,
+        alternates: { ka: row.slug, en: row.slug, ru: row.slug },
+      },
+    };
+  }
+  try {
+    return await getJson<ApiItem<ServiceDetail>>(`services/${encodeURIComponent(slug)}`, locale);
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 404) return null;
+    throw e;
+  }
 }
 
 export async function getProjects(locale: Locale): Promise<ApiList<Project>> {

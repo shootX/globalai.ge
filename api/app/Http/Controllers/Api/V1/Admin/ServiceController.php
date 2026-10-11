@@ -76,12 +76,10 @@ class ServiceController extends Controller
             'slug', 'title', 'summary', 'body', 'seo_title', 'seo_description',
         ]);
 
-        if (array_key_exists('sort_order', $data)) {
-            $service->sort_order = $data['sort_order'];
-        }
-
-        if (array_key_exists('is_published', $data)) {
-            $service->is_published = $data['is_published'];
+        foreach (['og_image', 'noindex', 'sort_order', 'is_published'] as $field) {
+            if (array_key_exists($field, $data)) {
+                $service->{$field} = $field === 'og_image' && $data[$field] === '' ? null : $data[$field];
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,20 +11,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { adminFetch, AdminApiError, jsonBody } from "@/lib/admin/client";
 import { i18nSchema, localesWithErrors } from "@/lib/admin/fields";
+import { adminOps } from "@/lib/admin/ops-copy";
 import { ADMIN_LOCALES, emptyT, type AdminLocale, type AdminPage, type ApiItem, type PageKey, type Translations } from "@/lib/admin/types";
 import { cn } from "@/lib/utils";
 import { PAGE_BLOCKS } from "@/lib/page-blocks";
 import { LocaleTabs } from "./locale-tabs";
 import { PageHeader } from "./page-header";
 import { SaveBar, type SaveState } from "./save-bar";
+import { SeoPreview, seoText } from "./seo-preview";
+import { ImageField } from "./image-field";
 import { StateBox } from "./state-box";
+
+const ops = adminOps("ka");
 
 /** Block keys public pages read (block key == messages/<locale>.json key). See src/lib/page-blocks.ts. */
 const DEFAULT_BLOCKS: Record<PageKey, readonly string[]> = PAGE_BLOCKS;
 
-type FormValues = { blocks: Record<string, Translations>; seo_title: Translations; seo_description: Translations };
+type FormValues = { blocks: Record<string, Translations>; seo_title: Translations; seo_description: Translations; og_image: string | null; noindex: boolean };
 
 /** API content is keyed by locale ({ka:{block:..}}); the form edits it per block with KA/EN/RU tabs. */
 function toForm(page: AdminPage | null, key: PageKey): FormValues {
@@ -37,13 +43,13 @@ function toForm(page: AdminPage | null, key: PageKey): FormValues {
   const names = new Set([...DEFAULT_BLOCKS[key], ...extra]);
   const blocks: Record<string, Translations> = {};
   for (const n of names) blocks[n] = { ka: str("ka", n), en: str("en", n), ru: str("ru", n) };
-  return { blocks, seo_title: page?.seo_title ?? emptyT(), seo_description: page?.seo_description ?? emptyT() };
+  return { blocks, seo_title: page?.seo_title ?? emptyT(), seo_description: page?.seo_description ?? emptyT(), og_image: page?.og_image ?? null, noindex: page?.noindex ?? false };
 }
 
 function toApi(key: PageKey, v: FormValues): AdminPage {
   const content = { ka: {}, en: {}, ru: {} } as AdminPage["content"] & Record<AdminLocale, Record<string, string>>;
   for (const [n, t] of Object.entries(v.blocks)) for (const l of ADMIN_LOCALES) if (t[l]) content[l][n] = t[l] as string;
-  return { key, content, seo_title: v.seo_title, seo_description: v.seo_description };
+  return { key, content, seo_title: v.seo_title, seo_description: v.seo_description, og_image: v.og_image, noindex: v.noindex };
 }
 
 export function PageEditor({ pageKey }: { pageKey: PageKey }) {
@@ -77,16 +83,19 @@ function PageForm({ pageKey, initial }: { pageKey: PageKey; initial: FormValues 
   const [saveState, setSaveState] = useState<SaveState>({ kind: "idle" });
   const [newBlock, setNewBlock] = useState("");
   const [blockNames, setBlockNames] = useState<string[]>(() => Object.keys(initial.blocks));
+  const [section, setSection] = useState<"content" | "seo">("content");
   const schema = useMemo(
     () =>
       z.object({
         blocks: z.object(Object.fromEntries(blockNames.map((n) => [n, i18nSchema(true)]))),
         seo_title: i18nSchema(false),
         seo_description: i18nSchema(false),
+        og_image: z.string().nullable().optional(),
+        noindex: z.boolean(),
       }),
     [blockNames],
   );
-  const { register, handleSubmit, getValues, setValue, formState } = useForm<FormValues>({
+  const { register, handleSubmit, getValues, setValue, control, formState } = useForm<FormValues>({
     resolver: zodResolver(schema) as never,
     defaultValues: initial,
   });
@@ -117,6 +126,8 @@ function PageForm({ pageKey, initial }: { pageKey: PageKey; initial: FormValues 
       );
     });
 
+  const watched = useWatch({ control });
+
   return (
     <>
       <form
@@ -135,12 +146,20 @@ function PageForm({ pageKey, initial }: { pageKey: PageKey; initial: FormValues 
             },
           )}
         >
+          <div role="tablist" aria-label="სექცია" className="inline-flex w-fit border border-primary">
+            <button type="button" role="tab" data-testid="admin-section-content" aria-selected={section === "content"} className={cn("micro px-4 py-2.5", section === "content" ? "bg-primary text-primary-foreground" : "text-primary")} onClick={() => setSection("content")}>
+              {ops.contentTab}
+            </button>
+            <button type="button" role="tab" data-testid="admin-section-seo" aria-selected={section === "seo"} className={cn("micro px-4 py-2.5", section === "seo" ? "bg-primary text-primary-foreground" : "text-primary")} onClick={() => setSection("seo")}>
+              {ops.seoTab}
+            </button>
+          </div>
           <LocaleTabs value={locale} onChange={setLocale} errored={errored} />
-          <div id="locale-panel" role="tabpanel" aria-labelledby={`tab-${locale}`} className="grid gap-6">
+          <div id="locale-panel" role="tabpanel" aria-labelledby={`tab-${locale}`} className={cn("grid gap-6", section !== "content" && "hidden")}>
             {blockNames.map((n) => (
               <div key={n}>{textField(`blocks.${n}`, n)}</div>
             ))}
-            <div className="flex items-end gap-2">
+            <div className="flex flex-wrap items-end gap-2">
               <div className="grid gap-2">
                 <Label htmlFor="new-block">ახალი ბლოკის გასაღები</Label>
                 <Input id="new-block" value={newBlock} onChange={(e) => setNewBlock(e.target.value.replace(/[^a-z0-9_]/g, ""))} className="rounded-none bg-white" placeholder="მაგ. cta_text" />
@@ -159,10 +178,28 @@ function PageForm({ pageKey, initial }: { pageKey: PageKey; initial: FormValues 
                 <Plus className="size-4" aria-hidden="true" /> დამატება
               </Button>
             </div>
-            <div className="grid gap-6 border-t border-border pt-6">
-              {textField("seo_title", "SEO სათაური", false)}
-              {textField("seo_description", "SEO აღწერა")}
-            </div>
+          </div>
+          <div className={cn("grid gap-6", section !== "seo" && "hidden")} data-testid="admin-seo-tab">
+            {textField("seo_title", "SEO სათაური", false)}
+            {textField("seo_description", "SEO აღწერა")}
+            <Controller
+              name="og_image"
+              control={control}
+              render={({ field }) => (
+                <ImageField label={ops.ogImage} value={field.value ? [field.value] : []} onChange={(paths) => field.onChange(paths[0] ?? null)} testId="admin-field-og_image" />
+              )}
+            />
+            <Controller
+              name="noindex"
+              control={control}
+              render={({ field }) => (
+                <div className="flex items-center gap-3">
+                  <Switch id="page-noindex" checked={!!field.value} onCheckedChange={field.onChange} data-testid="admin-field-noindex" />
+                  <Label htmlFor="page-noindex">{ops.noindex}</Label>
+                </div>
+              )}
+            />
+            <SeoPreview title={seoText(watched.seo_title as Translations | undefined, locale)} description={seoText(watched.seo_description as Translations | undefined, locale)} />
           </div>
           <SaveBar state={saveState} />
         </form>

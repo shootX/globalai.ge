@@ -4,9 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { FileText, FolderKanban, Inbox, LayoutDashboard, LogOut, Menu, Settings, Users, Wrench } from "lucide-react";
+import { FileText, FolderKanban, Inbox, KeyRound, LayoutDashboard, LogOut, Menu, ScrollText, Settings, Users, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+import { adminOps } from "@/lib/admin/ops-copy";
+
+const ops = adminOps("ka");
 
 const NAV = [
   { key: "dashboard", href: "/admin", label: "მთავარი", icon: LayoutDashboard },
@@ -16,6 +20,8 @@ const NAV = [
   { key: "team", href: "/admin/team", label: "გუნდი", icon: Users },
   { key: "settings", href: "/admin/settings", label: "პარამეტრები", icon: Settings },
   { key: "messages", href: "/admin/messages", label: "შეტყობინებები", icon: Inbox },
+  { key: "tokens", href: "/admin/tokens", label: ops.navTokens, icon: KeyRound },
+  { key: "audit", href: "/admin/audit", label: ops.navAudit, icon: ScrollText },
 ] as const;
 
 export function AdminShell({ children }: { children: React.ReactNode }) {

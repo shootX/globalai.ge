@@ -78,5 +78,13 @@ class PageController extends Controller
     private function fill(Page $page, array $data): void
     {
         TranslationWriter::apply($page, $data, ['content', 'seo_title', 'seo_description']);
+
+        if (array_key_exists('og_image', $data)) {
+            $page->og_image = $data['og_image'] === '' ? null : $data['og_image'];
+        }
+
+        if (array_key_exists('noindex', $data)) {
+            $page->noindex = (bool) $data['noindex'];
+        }
     }
 }

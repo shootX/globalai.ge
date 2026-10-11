@@ -19,3 +19,13 @@
 ## 2026-10-11
 
 - Canonical public repo: https://github.com/shootX/globalai.ge (PUBLIC). Layout: `api/`, `web/`, `e2e/`, `docs/`. Never commit `.env`, credentials or `LOCAL_ACCESS.md`.
+
+## 2026-10-11 — Bot operator
+
+- `docs/PRD.md`, `ARCHITECTURE.md`, `RULES.md`, and `DESIGN.md` were read before this change. Revalidation stays queued (RULES: do not call Next.js inline). The webhook is still `POST /api/revalidate` with HMAC `X-GlobalAI-Signature`, and now also `Authorization: Bearer` plus `X-Revalidate-Secret` from `REVALIDATE_SECRET` (falls back to `NEXT_REVALIDATE_SECRET`).
+- Bot accounts are normal users with `is_bot=true` and `role=admin`. `bot:create` prints the plaintext token once. Sanctum stores the hash. `expires_at` is required; a null or past expiry is 401. Login tokens also expire in 90 days.
+- Audit rows are append-only. Secret keys (`password`, `token`, `secret`) and `id|plaintext` values are removed before insert. Token list responses do not include the secret.
+- Page SEO is per record, not per locale, for `og_image` and `noindex`. Title and description stay `{ka,en,ru}` and fall back to `ka`. `noindex` removes every locale URL of that page from the sitemap and adds those paths to `robots.txt` disallow.
+- Admin chrome stays Georgian. New strings also exist in `messages/en.json` and `messages/ru.json` under `adminOps`. Accent buttons use `#C8290B` with white text. Secondary copy uses `#3D4A5C`.
+- Pest uses `globalai_test` only (`phpunit.xml`). Do not point tests at the live `globalai` database.
+

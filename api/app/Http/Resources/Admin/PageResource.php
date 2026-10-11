@@ -21,6 +21,8 @@ class PageResource extends JsonResource
             'content' => $this->translationMap('content'),
             'seo_title' => $this->translationMap('seo_title'),
             'seo_description' => $this->translationMap('seo_description'),
+            'og_image' => $this->og_image,
+            'noindex' => (bool) $this->noindex,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

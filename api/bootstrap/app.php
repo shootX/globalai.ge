@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureTokenIsActive;
 use App\Http\Middleware\NoStoreCacheHeaders;
 use App\Http\Middleware\SetPublicCacheHeaders;
 use App\Http\Middleware\SetRequestLocale;
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'public.cache' => SetPublicCacheHeaders::class,
             'no.store' => NoStoreCacheHeaders::class,
+            'token.active' => EnsureTokenIsActive::class,
         ]);
 
         $middleware->api(prepend: [SetRequestLocale::class]);

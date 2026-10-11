@@ -35,7 +35,7 @@ export function path(page: PageKey, locale: Locale = DEFAULT_LOCALE): string {
   return slug === '/' ? `/${locale}` : `/${locale}${slug}`;
 }
 
-export const ADMIN_PATHS = ['/admin', '/admin/projects', '/admin/messages', '/admin/settings'];
+export const ADMIN_PATHS = ['/admin', '/admin/projects', '/admin/messages', '/admin/settings', '/admin/tokens', '/admin/audit', '/admin/pages/home', '/admin/services/new'];
 export const ADMIN_LOGIN = '/admin/login';
 
 export const API = {

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { API_BASE, isMock, readToken, unauthorized } from "@/lib/admin/server";
-import { COLLECTIONS, nextId, store, type CollectionName } from "@/lib/admin/mock-store";
+import { COLLECTIONS, nextId, pushAudit, store, type CollectionName } from "@/lib/admin/mock-store";
 
 type Ctx = { params: Promise<{ path: string[] }> };
 
@@ -39,6 +39,72 @@ async function mock(request: Request, path: string[]) {
   const method = request.method;
 
   if (resource === "me" && method === "GET") return item({ name: "Admin (mock)", email: "admin@globalai.ge" });
+
+  if (resource === "tokens" && !id) {
+    if (method === "GET") return list(store.apiTokens);
+    if (method === "POST") {
+      const body = (await request.json()) as { name?: string; expires_in_days?: number };
+      const days = body.expires_in_days ?? 90;
+      const row = {
+        id: nextId(),
+        name: body.name?.trim() || "token",
+        expires_at: new Date(Date.now() + days * 86400000).toISOString(),
+        created_at: new Date().toISOString(),
+        last_used_at: null,
+        abilities: ["*"],
+      };
+      store.apiTokens.unshift(row);
+      pushAudit({ action: "token_created", model_type: "PersonalAccessToken", model: "PersonalAccessToken", model_id: row.id, old_values: null, new_values: { name: row.name, expires_at: row.expires_at } });
+      return item({ ...row, token: `${row.id}|${crypto.randomUUID().replace(/-/g, "")}` }, 201);
+    }
+  }
+  if (resource === "tokens" && id && method === "DELETE") {
+    const idx = store.apiTokens.findIndex((token) => String(token.id) === id);
+    if (idx < 0) return notFound();
+    const [row] = store.apiTokens.splice(idx, 1);
+    pushAudit({ action: "token_revoked", model_type: "PersonalAccessToken", model: "PersonalAccessToken", model_id: row.id, old_values: { name: row.name }, new_values: null });
+    return new NextResponse(null, { status: 204 });
+  }
+
+  if (resource === "audit-logs") {
+    if (method !== "GET") return NextResponse.json({ message: "Audit log is append-only." }, { status: 405 });
+    const url = new URL(request.url);
+    let rows = [...store.audit];
+    const userId = url.searchParams.get("user_id");
+    const model = url.searchParams.get("model_type");
+    const from = url.searchParams.get("from");
+    const to = url.searchParams.get("to");
+    if (userId) rows = rows.filter((row) => String(row.user_id) === userId);
+    if (model) {
+      const needle = model.toLowerCase();
+      rows = rows.filter((row) => (row.model ?? "").toLowerCase().includes(needle) || (row.model_type ?? "").toLowerCase().includes(needle));
+    }
+    if (from) rows = rows.filter((row) => row.created_at.slice(0, 10) >= from);
+    if (to) rows = rows.filter((row) => row.created_at.slice(0, 10) <= to);
+    const page = Math.max(1, Number(url.searchParams.get("page") || 1));
+    const per = 20;
+    const slice = rows.slice((page - 1) * per, page * per);
+    return NextResponse.json({ data: slice, meta: { current_page: page, per_page: per, total: rows.length, last_page: Math.max(1, Math.ceil(rows.length / per)) } });
+  }
+
+  if (resource === "seo" && id === "pages") {
+    const key = path[2];
+    const pageRow = store.pages.find((page) => page.key === key);
+    if (!pageRow) return notFound();
+    if (method === "GET") {
+      return item({ key, seo_title: pageRow.seo_title, seo_description: pageRow.seo_description, og_image: pageRow.og_image, noindex: pageRow.noindex });
+    }
+    if (method === "PUT") {
+      const body = (await request.json()) as Partial<typeof pageRow>;
+      const previous = { seo_title: pageRow.seo_title, seo_description: pageRow.seo_description, og_image: pageRow.og_image, noindex: pageRow.noindex };
+      if (body.seo_title) pageRow.seo_title = body.seo_title;
+      if (body.seo_description) pageRow.seo_description = body.seo_description;
+      if ("og_image" in body) pageRow.og_image = body.og_image ?? null;
+      if ("noindex" in body) pageRow.noindex = Boolean(body.noindex);
+      pushAudit({ action: "updated", model_type: "Page", model: "Page", model_id: null, old_values: previous, new_values: { seo_title: pageRow.seo_title, noindex: pageRow.noindex, og_image: pageRow.og_image } });
+      return item({ key, seo_title: pageRow.seo_title, seo_description: pageRow.seo_description, og_image: pageRow.og_image, noindex: pageRow.noindex });
+    }
+  }
 
   if (resource === "uploads" && method === "POST") {
     const form = await request.formData();
@@ -83,6 +149,7 @@ async function mock(request: Request, path: string[]) {
       const next = { ...(idx >= 0 ? store.pages[idx] : {}), ...body, key: id } as (typeof store.pages)[number];
       if (idx >= 0) store.pages[idx] = next;
       else store.pages.push(next);
+      pushAudit({ action: "updated", model_type: "Page", model: "Page", model_id: null, old_values: null, new_values: { key: id, noindex: next.noindex, seo_title: next.seo_title } });
       return item(next);
     }
     if (idx < 0) return notFound();

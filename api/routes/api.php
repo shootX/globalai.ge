@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Admin\AuthController;
 use App\Http\Controllers\Api\V1\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Api\V1\Admin\ProjectController as AdminProjectController;
+use App\Http\Controllers\Api\V1\Admin\SeoPageController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Api\V1\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Api\V1\Admin\SubmissionController;
 use App\Http\Controllers\Api\V1\Admin\TeamMemberController;
+use App\Http\Controllers\Api\V1\Admin\TokenController;
 use App\Http\Controllers\Api\V1\Admin\UploadController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\PageController;
@@ -34,8 +37,21 @@ Route::prefix('v1')->group(function () {
     Route::prefix('admin')->middleware('no.store')->group(function () {
         Route::post('login', [AuthController::class, 'login'])->middleware('throttle:admin-login');
 
-        Route::middleware('auth:sanctum')->group(function () {
+        Route::middleware(['auth:sanctum', 'token.active', 'throttle:admin-api'])->group(function () {
             Route::post('logout', [AuthController::class, 'logout']);
+
+            Route::get('tokens', [TokenController::class, 'index']);
+            Route::post('tokens', [TokenController::class, 'store']);
+            Route::delete('tokens/{id}', [TokenController::class, 'destroy'])->whereNumber('id');
+
+            Route::get('audit-logs', [AuditLogController::class, 'index']);
+            Route::match(['post', 'put', 'patch', 'delete'], 'audit-logs', [AuditLogController::class, 'rejectWrite']);
+            Route::match(['put', 'patch', 'delete'], 'audit-logs/{id}', [AuditLogController::class, 'rejectWrite'])->whereNumber('id');
+
+            Route::get('seo/pages/{key}', [SeoPageController::class, 'show'])
+                ->where('key', 'home|about|services|projects|contact');
+            Route::put('seo/pages/{key}', [SeoPageController::class, 'update'])
+                ->where('key', 'home|about|services|projects|contact');
 
             Route::apiResource('services', AdminServiceController::class);
             Route::apiResource('projects', AdminProjectController::class);

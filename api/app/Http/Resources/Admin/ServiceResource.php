@@ -23,6 +23,8 @@ class ServiceResource extends JsonResource
             'body' => $this->translationMap('body'),
             'seo_title' => $this->translationMap('seo_title'),
             'seo_description' => $this->translationMap('seo_description'),
+            'og_image' => $this->og_image,
+            'noindex' => (bool) $this->noindex,
             'sort_order' => $this->sort_order,
             'is_published' => $this->is_published,
             'created_at' => $this->created_at,
