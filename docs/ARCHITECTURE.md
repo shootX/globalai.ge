@@ -100,3 +100,5 @@ Tags: `services`, `projects`, `pages`, `team`, `settings`. If the URL or secret 
 ## Runtime
 
 `api/docker-compose.yml` runs PostgreSQL 16 and can run the API. Tests and CI use a real Postgres database (`globalai_test` in CI), not SQLite. `APP_DEBUG` is false in `.env.example` and in `.env.production.example`.
+
+Deploy: run `php artisan migrate --force` and `php artisan storage:link` on the server. `api/public/storage` is a symlink created by `storage:link`; it is git-ignored and must not be committed.

@@ -21,6 +21,7 @@ composer install
 php artisan key:generate
 docker compose up -d        # PostgreSQL (optional)
 php artisan migrate --seed
+php artisan storage:link   # creates api/public/storage (not committed; run on every deploy)
 php artisan serve           # http://localhost:8000
 php artisan test            # Pest
 ```

@@ -31,3 +31,7 @@ e2e/e2e/test-results/
 !api/storage/framework/sessions/.gitkeep
 !api/storage/framework/views/.gitkeep
 !api/storage/app/public/.gitkeep
+
+# created by php artisan storage:link
+api/public/storage
+!api/bootstrap/cache/.gitkeep
