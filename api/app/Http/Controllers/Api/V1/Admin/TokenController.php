@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTokenRequest;
 use App\Http\Resources\Admin\TokenResource;
 use App\Support\AuditLogger;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class TokenController extends Controller
 {
@@ -23,6 +25,8 @@ class TokenController extends Controller
 
     public function store(StoreTokenRequest $request): JsonResponse
     {
+        abort_if((bool) $request->user()->is_bot, 403, 'Bots cannot create tokens.');
+
         $days = (int) $request->input('expires_in_days', 90);
         $issued = $request->user()->createToken(
             $request->string('name')->toString(),
@@ -64,11 +68,14 @@ class TokenController extends Controller
         return response()->noContent();
     }
 
-    private function tokens(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    /**
+     * Admins see and revoke every token, not only their own.
+     */
+    private function tokens(): Builder
     {
         $user = request()->user();
         abort_unless($user !== null && $user->role === 'admin', 403);
 
-        return $user->tokens();
+        return PersonalAccessToken::query()->with('tokenable');
     }
 }

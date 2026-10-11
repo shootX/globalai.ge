@@ -264,3 +264,29 @@ it('validates seo and returns it in the requested locale with a ka fallback', fu
     expect(AuditLogger::scrub(['password' => 'secret', 'title' => ['ka' => 'ok'], 'token' => '1|abcdefghijklmnopqrstuvwxyz']))
         ->toBe(['title' => ['ka' => 'ok']]);
 });
+
+it('lets an admin list and revoke every token, with owner but never the secret', function () {
+    $admin = User::factory()->create(['role' => 'admin']);
+    $bot = User::factory()->create(['role' => 'admin', 'is_bot' => true, 'name' => 'Leaky Bot']);
+    $botPlain = $bot->createToken('bot', ['*'], now()->addDays(30))->plainTextToken;
+    $botTokenId = (int) explode('|', $botPlain)[0];
+
+    $listed = $this->withToken(adminToken($admin))->getJson('/api/v1/admin/tokens')->assertOk();
+    $row = collect($listed->json('data'))->firstWhere('id', $botTokenId);
+
+    expect($row)->not->toBeNull();
+    expect($row['tokenable_id'])->toBe($bot->id);
+    expect($row['owner_name'])->toBe('Leaky Bot');
+    expect($row)->not->toHaveKey('token');
+    expect($listed->getContent())->not->toContain(explode('|', $botPlain)[1]);
+
+    $this->withToken(adminToken($admin))->deleteJson("/api/v1/admin/tokens/{$botTokenId}")->assertNoContent();
+    expect(PersonalAccessToken::query()->find($botTokenId))->toBeNull();
+});
+
+it('forbids a bot from creating new tokens', function () {
+    $bot = User::factory()->create(['role' => 'admin', 'is_bot' => true]);
+
+    $this->withToken(adminToken($bot))->postJson('/api/v1/admin/tokens', ['name' => 'more'])->assertForbidden();
+    expect(PersonalAccessToken::query()->where('tokenable_id', $bot->id)->count())->toBe(1);
+});
