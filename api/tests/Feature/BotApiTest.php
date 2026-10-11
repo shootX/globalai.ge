@@ -290,3 +290,28 @@ it('forbids a bot from creating new tokens', function () {
     $this->withToken(adminToken($bot))->postJson('/api/v1/admin/tokens', ['name' => 'more'])->assertForbidden();
     expect(PersonalAccessToken::query()->where('tokenable_id', $bot->id)->count())->toBe(1);
 });
+
+it('defaults new users to editor and keeps role and is_bot out of mass assignment', function () {
+    $user = User::query()->create([
+        'name' => 'Plain',
+        'email' => 'plain@example.test',
+        'password' => 'secret-password-123',
+        'role' => 'admin',
+        'is_bot' => true,
+    ])->fresh();
+
+    expect($user->role)->toBe('editor');
+    expect($user->is_bot)->toBeFalse();
+    expect((new User)->getFillable())->not->toContain('role')->not->toContain('is_bot');
+});
+
+it('creates admins and bots with the admin role via artisan', function () {
+    $this->artisan('admin:create', ['--name' => 'Boss', '--email' => 'boss@example.test'])
+        ->expectsQuestion('Password', 'Str0ng-Passw0rd!x')
+        ->assertSuccessful();
+    Artisan::call('bot:create', ['name' => 'Writer']);
+
+    expect(User::query()->where('email', 'boss@example.test')->value('role'))->toBe('admin');
+    $bot = User::query()->where('is_bot', true)->firstOrFail();
+    expect($bot->role)->toBe('admin');
+});

@@ -29,6 +29,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Str::password(40),
             'remember_token' => Str::random(10),
+            // Tests act as admins by default; the DB default is 'editor'.
+            'role' => 'admin',
         ];
     }
 

@@ -35,13 +35,14 @@ class CreateBot extends Command
             return self::FAILURE;
         }
 
-        $user = User::query()->create([
+        $user = (new User)->forceFill([
             'name' => $name,
             'email' => 'bot-'.Str::lower(Str::random(12)).'@bots.globalai.ge',
             'password' => Str::password(40),
             'is_bot' => true,
-            'role' => 'admin',
+            'role' => User::ROLE_ADMIN,
         ]);
+        $user->save();
 
         $issued = $user->createToken('bot', ['*'], now()->addDays($days));
 

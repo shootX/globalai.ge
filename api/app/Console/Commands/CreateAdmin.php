@@ -35,11 +35,12 @@ class CreateAdmin extends Command
             return self::FAILURE;
         }
 
-        User::query()->create([
+        (new User)->forceFill([
             'name' => $name,
             'email' => $email,
             'password' => $password,
-        ]);
+            'role' => User::ROLE_ADMIN,
+        ])->save();
 
         $this->info('Admin created.');
 
