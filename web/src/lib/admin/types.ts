@@ -16,6 +16,8 @@ export type AdminService = {
   body: Translations;
   seo_title: Translations;
   seo_description: Translations;
+  og_image: string | null;
+  noindex: boolean;
   sort_order: number;
   is_published: boolean;
 };
@@ -48,6 +50,8 @@ export type AdminPage = {
   content: { ka: PageContent; en: PageContent | null; ru: PageContent | null };
   seo_title: Translations;
   seo_description: Translations;
+  og_image: string | null;
+  noindex: boolean;
 };
 
 export type AdminStat = { value: string; label: Translations };

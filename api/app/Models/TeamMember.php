@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use App\Models\Concerns\HasPublishing;
 use Database\Factories\TeamMemberFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -13,7 +14,7 @@ use Spatie\Translatable\HasTranslations;
 class TeamMember extends Model
 {
     /** @use HasFactory<TeamMemberFactory> */
-    use HasFactory, HasPublishing, HasTranslations;
+    use Auditable, HasFactory, HasPublishing, HasTranslations;
 
     /** @var array<int, string> */
     public array $translatable = [

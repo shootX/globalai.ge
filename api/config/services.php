@@ -37,7 +37,7 @@ return [
 
     'next' => [
         'revalidate_url' => env('NEXT_REVALIDATE_URL'),
-        'revalidate_secret' => env('NEXT_REVALIDATE_SECRET'),
+        'revalidate_secret' => env('REVALIDATE_SECRET', env('NEXT_REVALIDATE_SECRET')),
     ],
 
 ];

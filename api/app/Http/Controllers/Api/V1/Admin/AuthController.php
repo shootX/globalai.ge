@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LoginRequest;
 use App\Models\User;
+use App\Support\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,9 +23,16 @@ class AuthController extends Controller
             ], 422);
         }
 
+        $issued = $user->createToken('admin', ['*'], now()->addDays(90));
+
+        AuditLogger::write('login', $user, null, [
+            'name' => $user->name,
+            'email' => $user->email,
+        ], $user->id);
+
         return response()->json([
             'data' => [
-                'token' => $user->createToken('admin')->plainTextToken,
+                'token' => $issued->plainTextToken,
                 'token_type' => 'Bearer',
                 'user' => [
                     'id' => $user->id,
@@ -40,6 +48,10 @@ class AuthController extends Controller
         $token = $request->user()?->currentAccessToken();
 
         if ($token instanceof PersonalAccessToken) {
+            AuditLogger::write('token_revoked', $token, [
+                'name' => $token->name,
+                'expires_at' => $token->expires_at?->toIso8601String(),
+            ], null, $request->user()->id);
             $token->delete();
         } else {
             $request->user()?->tokens()->delete();

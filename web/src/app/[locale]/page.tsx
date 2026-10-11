@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { getProjects, getServices, getSettings, getPageText } from "@/lib/api";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/page-seo";
+import { SITE_URL } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { resolveLocale, type LocaleParams } from "@/lib/locale-params";
 import { StatsBand } from "@/components/stats-band";
 import { ProjectCard } from "@/components/project-card";
@@ -24,6 +26,15 @@ export default async function HomePage({ params }: LocaleParams) {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "globalAI.GE",
+          url: SITE_URL,
+          logo: `${SITE_URL}/brand/globalai-logo.png`,
+        }}
+      />
       <div className="wrap hero">
         <div className="blob" aria-hidden="true" style={{ width: 170, height: 170, left: "30%", top: 60 }} />
         <div className="blob" aria-hidden="true" style={{ width: 240, height: 240, right: "12%", bottom: 120 }} />

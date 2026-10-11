@@ -13,6 +13,10 @@ export type Service = {
   sort_order: number;
   body?: string | null;
   tags?: string[];
+  noindex?: boolean;
+  og_image?: string | null;
+  seo_title?: string | null;
+  seo_description?: string | null;
 };
 
 export type ProjectCategory = "web" | "mobile" | "ai";
@@ -26,6 +30,8 @@ export type Project = {
   category: string | null;
   cover_image: string | null;
   sort_order: number;
+  noindex?: boolean;
+  og_image?: string | null;
 };
 
 /** openapi: ProjectDetail. */
@@ -34,6 +40,8 @@ export type ProjectDetail = Project & {
   gallery: string[];
   seo_title: string | null;
   seo_description: string | null;
+  og_image: string | null;
+  noindex: boolean;
   alternates: Record<Locale, string | null>;
 };
 
@@ -43,6 +51,18 @@ export type Page = {
   content: Record<string, unknown> | null;
   seo_title: string | null;
   seo_description: string | null;
+  og_image?: string | null;
+  noindex?: boolean;
+};
+
+/** openapi: Service detail. */
+export type ServiceDetail = Service & {
+  body: string | null;
+  seo_title: string | null;
+  seo_description: string | null;
+  og_image: string | null;
+  noindex: boolean;
+  alternates: Record<Locale, string | null>;
 };
 
 /** openapi: TeamMember. */

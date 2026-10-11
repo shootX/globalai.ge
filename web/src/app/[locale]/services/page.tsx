@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getServices, getPageText } from "@/lib/api";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/page-seo";
+import { SITE_URL, localizedPath } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { resolveLocale, type LocaleParams } from "@/lib/locale-params";
 import { PageHero } from "@/components/page-hero";
 import { CtaBand } from "@/components/cta-band";
@@ -19,6 +21,17 @@ export default async function ServicesPage({ params }: LocaleParams) {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": services.data.map((service) => ({
+            "@type": "Service",
+            name: service.title,
+            description: service.summary || service.body || undefined,
+            url: `${SITE_URL}${localizedPath(`/services/${service.slug ?? ""}`, locale)}`,
+          })),
+        }}
+      />
       <PageHero testId="services-hero" label={t("label")} title={t("title")} intro={t("intro")} />
       <section data-testid="services-list">
         <div className="wrap">

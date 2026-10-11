@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteUploadRequest;
 use App\Http\Requests\Admin\UploadImageRequest;
 use App\Models\Setting;
+use App\Support\AuditLogger;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,8 @@ class UploadController extends Controller
         $this->authorize('upload', Setting::class);
 
         $path = $request->file('file')->store('uploads', 'public');
+
+        AuditLogger::write('uploaded', null, null, ['path' => $path], modelType: 'upload');
 
         return response()->json([
             'data' => [
@@ -38,6 +41,8 @@ class UploadController extends Controller
 
         try {
             abort_unless($disk->exists($path), 404);
+
+            AuditLogger::write('deleted', null, ['path' => $path], null, modelType: 'upload');
 
             if (! $disk->delete($path)) {
                 throw UnableToDeleteFile::atLocation($path);

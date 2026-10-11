@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Database\Factories\PageFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['key', 'content', 'seo_title', 'seo_description'])]
+#[Fillable(['key', 'content', 'seo_title', 'seo_description', 'og_image', 'noindex'])]
 class Page extends Model
 {
     /** @use HasFactory<PageFactory> */
-    use HasFactory, HasTranslations;
+    use Auditable, HasFactory, HasTranslations;
 
     public const KEYS = ['home', 'about', 'services', 'projects', 'contact'];
 
@@ -22,4 +23,11 @@ class Page extends Model
         'seo_title',
         'seo_description',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'noindex' => 'boolean',
+        ];
+    }
 }

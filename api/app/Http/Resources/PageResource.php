@@ -20,6 +20,8 @@ class PageResource extends JsonResource
             'content' => $this->translated('content'),
             'seo_title' => $this->translated('seo_title'),
             'seo_description' => $this->translated('seo_description'),
+            'og_image' => $this->og_image,
+            'noindex' => (bool) $this->noindex,
         ];
     }
 }

@@ -27,6 +27,8 @@ class UpsertServiceRequest extends FormRequest
             ...TranslatableRules::text('seo_title', required: false, max: 255),
             ...TranslatableRules::text('seo_description', required: false, max: 320),
             ...TranslatableRules::slug('services', $service instanceof Service ? $service->id : null),
+            'og_image' => ['sometimes', 'nullable', 'string', 'max:2048', 'regex:/^(uploads\/[A-Za-z0-9][A-Za-z0-9._-]*|\/brand\/[A-Za-z0-9][A-Za-z0-9._-]*)$/'],
+            'noindex' => ['sometimes', 'boolean'],
             'sort_order' => ['sometimes', 'integer', 'min:0', 'max:100000'],
             'is_published' => ['sometimes', 'boolean'],
         ];

@@ -10,6 +10,30 @@ import type {
 } from "./types";
 import { mockServiceRows as mockServices } from "@/lib/mocks";
 
+export type MockAudit = {
+  id: number;
+  user_id: number;
+  user: { id: number; name: string };
+  action: string;
+  model_type: string | null;
+  model: string | null;
+  model_id: number | null;
+  old_values: Record<string, unknown> | null;
+  new_values: Record<string, unknown> | null;
+  ip: string | null;
+  user_agent: string | null;
+  created_at: string;
+};
+
+export type MockToken = {
+  id: number;
+  name: string;
+  expires_at: string;
+  created_at: string;
+  last_used_at: string | null;
+  abilities: string[];
+};
+
 /** In-memory mock of the Laravel admin API. Lives only for the lifetime of the Node process. */
 type Store = {
   tokens: Set<string>;
@@ -19,6 +43,8 @@ type Store = {
   submissions: ContactSubmission[];
   pages: AdminPage[];
   settings: AdminSettings;
+  apiTokens: MockToken[];
+  audit: MockAudit[];
   seq: number;
   /** Mock storage disk: path -> bytes (served by /api/mock-storage/[...path]). */
   files: Map<string, { type: string; bytes: Buffer }>;
@@ -43,6 +69,8 @@ function seed(): Store {
       body: t(s.description, en[n].description, ru[n].description),
       seo_title: blank(),
       seo_description: blank(),
+      og_image: null,
+      noindex: false,
       sort_order: s.order,
       is_published: true,
     })),
@@ -74,6 +102,8 @@ function seed(): Store {
         },
         seo_title: blank(),
         seo_description: blank(),
+        og_image: null,
+        noindex: false,
       },
       {
         key: "about",
@@ -84,6 +114,8 @@ function seed(): Store {
         },
         seo_title: blank(),
         seo_description: blank(),
+        og_image: null,
+        noindex: false,
       },
     ],
     settings: {
@@ -97,12 +129,37 @@ function seed(): Store {
       team_visible: false,
       stats_visible: false,
     },
+    apiTokens: [],
+    audit: [],
   };
 }
 
 const g = globalThis as unknown as { __gaiAdminStore?: Store };
 export const store: Store = (g.__gaiAdminStore ??= seed());
 store.files ??= new Map();
+store.apiTokens ??= [];
+store.audit ??= [];
+
+const MOCK_USER = { id: 1, name: "Admin" };
+
+export function pushAudit(entry: Omit<MockAudit, "id" | "user_id" | "user" | "ip" | "user_agent" | "created_at"> & Partial<Pick<MockAudit, "old_values" | "new_values">>): MockAudit {
+  const row: MockAudit = {
+    id: nextId(),
+    user_id: MOCK_USER.id,
+    user: MOCK_USER,
+    action: entry.action,
+    model_type: entry.model_type,
+    model: entry.model,
+    model_id: entry.model_id,
+    old_values: entry.old_values ?? null,
+    new_values: entry.new_values ?? null,
+    ip: "127.0.0.1",
+    user_agent: "mock",
+    created_at: new Date().toISOString(),
+  };
+  store.audit.unshift(row);
+  return row;
+}
 
 export type CollectionName = "services" | "projects" | "team" | "submissions";
 export const COLLECTIONS: CollectionName[] = ["services", "projects", "team", "submissions"];

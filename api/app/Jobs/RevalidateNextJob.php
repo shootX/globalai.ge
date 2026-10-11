@@ -39,6 +39,8 @@ class RevalidateNextJob implements ShouldQueue
         Http::timeout(5)
             ->withHeaders([
                 'X-GlobalAI-Signature' => $signature,
+                'X-Revalidate-Secret' => $secret,
+                'Authorization' => 'Bearer '.$secret,
                 'Accept' => 'application/json',
             ])
             ->withBody($payload, 'application/json')

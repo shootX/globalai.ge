@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
 import { getProjects, type ApiList, type Project, getPageText } from "@/lib/api";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata } from "@/lib/page-seo";
+import { SITE_URL, localizedPath } from "@/lib/seo";
+import { JsonLd } from "@/components/json-ld";
 import { resolveLocale, type LocaleParams } from "@/lib/locale-params";
 import { PageHero } from "@/components/page-hero";
 import { CtaBand } from "@/components/cta-band";
@@ -24,6 +26,20 @@ export default async function ProjectsPage({ params }: LocaleParams) {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            { "@type": "CreativeWork", name: t("title"), description: t("intro"), url: `${SITE_URL}${localizedPath("/projects", locale)}` },
+            ...(projects?.data ?? []).map((project) => ({
+              "@type": "CreativeWork",
+              name: project.title,
+              description: project.summary,
+              url: `${SITE_URL}${localizedPath(`/projects/${project.slug ?? ""}`, locale)}`,
+            })),
+          ],
+        }}
+      />
       <PageHero testId="projects-hero" label={t("label")} title={t("title")} intro={t("intro")} />
       <section style={{ border: 0, paddingTop: 20 }} data-testid="projects-list">
         <div className="wrap">

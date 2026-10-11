@@ -20,6 +20,8 @@ class ServiceResource extends JsonResource
             'slug' => $this->translated('slug'),
             'title' => $this->translated('title'),
             'summary' => $this->translated('summary'),
+            'og_image' => $this->og_image,
+            'noindex' => (bool) $this->noindex,
             'sort_order' => $this->sort_order,
         ];
     }

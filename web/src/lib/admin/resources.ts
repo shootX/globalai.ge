@@ -19,6 +19,8 @@ const ka = (v: unknown) => ((v as Translations | undefined)?.ka ?? "") || "—";
 const seoFields: Field[] = [
   { kind: "i18n", name: "seo_title", label: "SEO სათაური" },
   { kind: "i18n", name: "seo_description", label: "SEO აღწერა", multiline: true },
+  { kind: "image", name: "og_image", label: "OG სურათი" },
+  { kind: "switch", name: "noindex", label: "noindex" },
 ];
 
 const serviceFields: Field[] = [
@@ -39,7 +41,7 @@ export const RESOURCES: Record<"services" | "projects" | "team", ResourceConfig>
     title: "სერვისები",
     singular: "სერვისი",
     fields: serviceFields,
-    empty: () => ({ title: emptyT(), slug: emptyT(), summary: emptyT(), body: emptyT(), seo_title: emptyT(), seo_description: emptyT(), sort_order: 0, is_published: false }),
+    empty: () => ({ title: emptyT(), slug: emptyT(), summary: emptyT(), body: emptyT(), seo_title: emptyT(), seo_description: emptyT(), og_image: null, noindex: false, sort_order: 0, is_published: false }),
     primary: (r) => ka(r.title),
     secondary: (r) => ka(r.slug),
   },
@@ -58,7 +60,7 @@ export const RESOURCES: Record<"services" | "projects" | "team", ResourceConfig>
     ],
     empty: () => ({
       title: emptyT(), slug: emptyT(), summary: emptyT(), body: emptyT(), category: emptyT(), seo_title: emptyT(), seo_description: emptyT(),
-      cover_image: null, gallery: [], sort_order: 0, is_published: false,
+      og_image: null, noindex: false, cover_image: null, gallery: [], sort_order: 0, is_published: false,
     }),
     primary: (r) => ka(r.title),
     secondary: (r) => ka(r.slug),
