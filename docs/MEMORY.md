@@ -29,3 +29,10 @@
 - Admin chrome stays Georgian. New strings also exist in `messages/en.json` and `messages/ru.json` under `adminOps`. Accent buttons use `#C8290B` with white text. Secondary copy uses `#3D4A5C`.
 - Pest uses `globalai_test` only (`phpunit.xml`). Do not point tests at the live `globalai` database.
 
+
+## 2026-10-23 — Monument redesign
+
+- Theme lives on `<html data-theme>`; no attribute follows the OS. `THEME_SCRIPT` must stay in `web/src/lib/theme.ts` (not the client component), because a server layout importing a string from a `"use client"` file gets a client reference, not the string.
+- Page text: block key == message key. `web/src/lib/page-blocks.ts` `PAGE_BLOCK_GROUPS` is the list the admin editor shows. Add a new editable string there and in all three `messages/*.json`.
+- The admin editor saves every prefilled block, because the API requires a non-empty `content.ka`. After the first save the CMS text wins over later changes to `messages/*.json`.
+- `api/composer.lock` currently needs PHP 8.4 (symfony 8.1). A PHP 8.3 machine cannot `composer install` it as is.

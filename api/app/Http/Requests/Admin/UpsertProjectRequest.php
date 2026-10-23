@@ -33,6 +33,8 @@ class UpsertProjectRequest extends FormRequest
             'cover_image' => ['sometimes', 'nullable', 'string', 'max:2048'],
             'gallery' => ['sometimes', 'nullable', 'array', 'max:30'],
             'gallery.*' => ['string', 'max:2048'],
+            'website_url' => ['sometimes', 'nullable', 'string', 'max:2048', 'url:http,https'],
+            'status' => ['sometimes', 'string', 'in:'.implode(',', Project::STATUSES)],
             'sort_order' => ['sometimes', 'integer', 'min:0', 'max:100000'],
             'is_published' => ['sometimes', 'boolean'],
         ];

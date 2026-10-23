@@ -1,18 +1,12 @@
-type PageHeroProps = { label: string; title: string; intro: string; testId: string };
+type PageHeroProps = { label: string; title: string; intro?: string; testId: string; children?: React.ReactNode };
 
-export function PageHero({ label, title, intro, testId }: PageHeroProps) {
+export function PageHero({ label, title, intro, testId, children }: PageHeroProps) {
   return (
-    <div className="wrap ph" data-testid={testId}>
-      <div className="blob" aria-hidden="true" style={{ width: 300, height: 300, right: "6%", top: 40 }} />
-      <div className="blob" aria-hidden="true" style={{ width: 110, height: 110, right: "30%", top: 220 }} />
-      <span className="m" style={{ color: "var(--grey)" }}>
-        {label}
-      </span>
-      <h1>
-        {title}
-        <em>.</em>
-      </h1>
-      <p className="intro">{intro}</p>
-    </div>
+    <header className="wrap page-hero" data-testid={testId}>
+      <span className="label">{label}</span>
+      <h1>{title}</h1>
+      {intro ? <p className="intro">{intro}</p> : null}
+      {children ? <div className="extra">{children}</div> : null}
+    </header>
   );
 }

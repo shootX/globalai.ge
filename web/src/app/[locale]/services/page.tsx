@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Link } from "@/i18n/navigation";
 import { getServices, getPageText } from "@/lib/api";
 import { pageMetadata } from "@/lib/page-seo";
 import { SITE_URL, localizedPath } from "@/lib/seo";
@@ -33,44 +34,51 @@ export default async function ServicesPage({ params }: LocaleParams) {
         }}
       />
       <PageHero testId="services-hero" label={t("label")} title={t("title")} intro={t("intro")} />
-      <section data-testid="services-list">
-        <div className="wrap">
-          {services.data.map((s, i) => (
-            <div className="srow" key={s.id} id={s.slug ?? undefined} data-testid={`service-${i}`}>
-              <span className="n">{String(i + 1).padStart(2, "0")}</span>
-              <h3>{s.title}</h3>
-              <p>{s.body}</p>
-              <ul>
-                {(s.tags ?? []).map((tag) => (
-                  <li key={tag}>{tag}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <section className="block tight" data-testid="services-list">
+        <div className="wrap service-list">
+          {services.data.map((s, i) => {
+            const inner = (
+              <>
+                <h3>{s.title}</h3>
+                <div>
+                  <p>{s.summary || s.body}</p>
+                  {(s.tags ?? []).length > 0 ? (
+                    <div className="tags">
+                      {(s.tags ?? []).map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <span className="go" aria-hidden="true">
+                  →
+                </span>
+              </>
+            );
+            return s.slug ? (
+              <Link className="service-row" key={s.id} id={s.slug} href={`/services/${s.slug}`} data-testid={`service-${i}`}>
+                {inner}
+              </Link>
+            ) : (
+              <div className="service-row" key={s.id} data-testid={`service-${i}`}>
+                {inner}
+              </div>
+            );
+          })}
         </div>
       </section>
-      <section data-testid="services-process">
+      <section className="block lime-field" data-testid="services-process">
         <div className="wrap">
-          <div className="sh">
-            <h2>
-              {t("processTitle")}
-              <em>.</em>
-            </h2>
-            <span className="m" style={{ color: "var(--grey)" }}>
-              {t("processLabel")}
-            </span>
-          </div>
-          <div className="proc">
+          <span className="label">{t("processLabel")}</span>
+          <h2>{t("processTitle")}</h2>
+          <ol className="steps">
             {steps.map((s, i) => (
-              <div key={s.t} data-testid={`step-${i}`}>
-                <span className="n">
-                  {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
-                </span>
-                <h3>{s.t}</h3>
-                <p>{s.d}</p>
-              </div>
+              <li key={s.t} data-testid={`step-${i}`}>
+                <b>{s.t}</b>
+                <span>{s.d}</span>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
       <CtaBand title={t("ctaBand")} cta={t("ctaContact")} testId="cta-services-contact" />

@@ -35,73 +35,51 @@ export default async function AboutPage({ params }: LocaleParams) {
         }}
       />
       <PageHero testId="about-hero" label={t("label")} title={t("title")} intro={t("intro")} />
-      <section data-testid="about-mission">
-        <div className="wrap mis">
+      <section className="block tight" data-testid="about-mission">
+        <div className="wrap grid12 split">
           <div>
-            <span className="m" style={{ color: "var(--grey)" }}>
-              {t("missionLabel")}
-            </span>
-            <p className="st" style={{ marginTop: 18 }}>
-              {t("mission")}
-              <em style={{ color: "var(--red)", fontStyle: "normal" }}>.</em>
-            </p>
+            <span className="label">{t("missionLabel")}</span>
+            <p className="lead">{t("mission")}</p>
           </div>
           <div>
             <p>{t("p1")}</p>
             <p>{t("p2")}</p>
-            <Link className="btn" href="/services" data-testid="cta-about-services">
+            <Link className="text-link" href="/services" data-testid="cta-about-services">
               {t("ctaServices")} <span aria-hidden="true">→</span>
             </Link>
           </div>
         </div>
       </section>
-      <section data-testid="about-values">
+      <section className="block tight" data-testid="about-values">
         <div className="wrap">
-          <div className="sh">
-            <h2>
-              {t("valuesTitle")}
-              <em>.</em>
-            </h2>
-            <span className="m" style={{ color: "var(--grey)" }}>
-              {t("valuesLabel")}
-            </span>
-          </div>
-          <div className="vals">
+          <span className="label">{t("valuesLabel")}</span>
+          <h2 className="section-title">{t("valuesTitle")}</h2>
+          <div className="cards four">
             {values.map((v, i) => (
-              <div key={v.t} data-testid={`value-${i}`}>
-                <span className="n">{String(i + 1).padStart(2, "0")}</span>
+              <article className="card compact" key={v.t} data-testid={`value-${i}`}>
                 <h3>{v.t}</h3>
                 <p>{v.d}</p>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
       {showTeam ? (
-        <section data-testid="about-team">
+        <section className="block tight" data-testid="about-team">
           <div className="wrap">
-            <div className="sh">
-              <h2>
-                {t("teamTitle")}
-                <em>.</em>
-              </h2>
-              <span className="m" style={{ color: "var(--grey)" }}>
-                {t("teamLabel")}
-              </span>
-            </div>
+            <span className="label">{t("teamLabel")}</span>
+            <h2 className="section-title">{t("teamTitle")}</h2>
             <div className="team">
               {team.data.map((m, i) => (
                 <article key={m.id} data-testid={`team-${i}`}>
                   <div
-                    className="av"
+                    className="ph"
                     role="img"
                     aria-label={m.name ?? ""}
-                    style={m.photo ? { background: `center/cover url(${storageUrl(m.photo)})` } : undefined}
-                  >
-                    <span className="m">{String(i + 1).padStart(2, "0")}</span>
-                  </div>
+                    style={m.photo ? { backgroundImage: `url(${storageUrl(m.photo)})` } : undefined}
+                  />
                   <h3>{m.name}</h3>
-                  <span className="m">{m.role}</span>
+                  <span>{m.role}</span>
                 </article>
               ))}
             </div>

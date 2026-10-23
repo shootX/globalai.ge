@@ -65,7 +65,7 @@ export function ContactForm({ locale, compact = false }: ContactFormProps) {
 
   const nameField = (
     <div>
-      <label className="m" htmlFor="name">
+      <label htmlFor="name">
         {t("name")}
       </label>
       <input
@@ -84,7 +84,7 @@ export function ContactForm({ locale, compact = false }: ContactFormProps) {
   );
   const emailField = (
     <div>
-      <label className="m" htmlFor="email">
+      <label htmlFor="email">
         {t("email")}
       </label>
       <input
@@ -103,7 +103,7 @@ export function ContactForm({ locale, compact = false }: ContactFormProps) {
   );
 
   return (
-    <form data-testid="contact-form" onSubmit={handleSubmit(onSubmit)}>
+    <form className="contact" data-testid="contact-form" onSubmit={handleSubmit(onSubmit)}>
       {compact ? (
         <>
           {nameField}
@@ -116,7 +116,7 @@ export function ContactForm({ locale, compact = false }: ContactFormProps) {
         </div>
       )}
       <div>
-        <label className="m" htmlFor="subject">
+        <label htmlFor="subject">
           {t("subject")} <span className="opt">{t("optional")}</span>
         </label>
         <input
@@ -130,7 +130,7 @@ export function ContactForm({ locale, compact = false }: ContactFormProps) {
         {err("subject")}
       </div>
       <div>
-        <label className="m" htmlFor="message">
+        <label htmlFor="message">
           {t("message")}
         </label>
         <textarea
@@ -149,7 +149,7 @@ export function ContactForm({ locale, compact = false }: ContactFormProps) {
         <label htmlFor="company_website">{t("honeypot")}</label>
         <input id="company_website" type="text" tabIndex={-1} autoComplete="off" {...register("company_website")} />
       </div>
-      <button type="submit" data-testid="contact-submit" disabled={status === "sending"}>
+      <button type="submit" className="btn" data-testid="contact-submit" disabled={status === "sending"}>
         {status === "sending" ? t("sending") : t("submit")} <span aria-hidden="true">→</span>
       </button>
       {status === "success" ? (

@@ -1025,6 +1025,8 @@ components:
         summary: { type: string, nullable: true }
         category: { type: string, nullable: true }
         cover_image: { type: string, nullable: true }
+        website_url: { type: string, nullable: true, description: 'Public site of the venture (http/https).' }
+        status: { type: string, enum: [live, building], description: 'live = running venture, building = in progress.' }
         sort_order: { type: integer }
     ProjectDetail:
       allOf:
@@ -1207,6 +1209,8 @@ components:
             gallery:
               type: array
               items: { type: string }
+            website_url: { type: string, nullable: true, maxLength: 2048 }
+            status: { type: string, enum: [live, building] }
     PageWrite:
       type: object
       required: [content]

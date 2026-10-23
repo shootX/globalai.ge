@@ -53,14 +53,24 @@ export const RESOURCES: Record<"services" | "projects" | "team", ResourceConfig>
     singular: "პროექტი",
     fields: [
       ...serviceFields.slice(0, 4),
-      { kind: "i18n", name: "category", label: "კატეგორია (web / mobile / ai)" },
+      { kind: "i18n", name: "category", label: "მიმართულება (მაგ. ავტო, მობილობა)" },
+      { kind: "text", name: "website_url", label: "საიტის ბმული (მაგ. https://autolime.ge)", type: "url" },
+      {
+        kind: "select",
+        name: "status",
+        label: "სტატუსი",
+        options: [
+          { value: "live", label: "მოქმედი" },
+          { value: "building", label: "მზადდება" },
+        ],
+      },
       { kind: "image", name: "cover_image", label: "ქავერი" },
       { kind: "gallery", name: "gallery", label: "გალერეა" },
       ...serviceFields.slice(4),
     ],
     empty: () => ({
       title: emptyT(), slug: emptyT(), summary: emptyT(), body: emptyT(), category: emptyT(), seo_title: emptyT(), seo_description: emptyT(),
-      og_image: null, noindex: false, cover_image: null, gallery: [], sort_order: 0, is_published: false,
+      og_image: null, noindex: false, cover_image: null, gallery: [], website_url: "", status: "live", sort_order: 0, is_published: false,
     }),
     primary: (r) => ka(r.title),
     secondary: (r) => ka(r.slug),

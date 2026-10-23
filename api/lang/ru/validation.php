@@ -201,6 +201,7 @@ return [
         'body' => 'текст',
         'category' => 'категория',
         'cover_image' => 'обложка',
+        'website_url' => 'сайт',
         'gallery' => 'галерея',
         'gallery.*' => 'изображение галереи',
         'sort_order' => 'порядок сортировки',

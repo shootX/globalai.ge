@@ -29,6 +29,10 @@ export type Project = {
   summary: string | null;
   category: string | null;
   cover_image: string | null;
+  /** Public site of the venture, e.g. https://autolime.ge. */
+  website_url?: string | null;
+  /** live = running venture, building = in progress. */
+  status?: "live" | "building";
   sort_order: number;
   noindex?: boolean;
   og_image?: string | null;

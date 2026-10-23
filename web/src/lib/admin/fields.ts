@@ -7,7 +7,8 @@ export type Field =
   | { kind: "number"; name: string; label: string }
   | { kind: "switch"; name: string; label: string }
   | { kind: "image"; name: string; label: string }
-  | { kind: "gallery"; name: string; label: string };
+  | { kind: "gallery"; name: string; label: string }
+  | { kind: "select"; name: string; label: string; options: { value: string; label: string }[] };
 
 export const KA_REQUIRED = "ქართული (KA) სავალდებულოა.";
 const SLUG_RE = /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u;
@@ -43,6 +44,7 @@ export function buildSchema(fields: Field[]) {
       case "text": {
         let s = z.string().trim();
         if (f.type === "email") s = s.refine((v) => !v || z.email().safeParse(v).success, "ელ-ფოსტის ფორმატი არასწორია.") as never;
+        if (f.type === "url") s = s.refine((v) => !v || /^https?:\/\/\S+$/i.test(v), "ბმული უნდა იწყებოდეს http:// ან https://") as never;
         shape[f.name] = f.required ? s.min(1, "სავალდებულო ველი.") : s.nullable().optional();
         break;
       }
@@ -57,6 +59,9 @@ export function buildSchema(fields: Field[]) {
         break;
       case "gallery":
         shape[f.name] = z.array(z.string());
+        break;
+      case "select":
+        shape[f.name] = z.enum(f.options.map((o) => o.value) as [string, ...string[]]);
         break;
     }
   }

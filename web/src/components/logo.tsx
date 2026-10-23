@@ -1,20 +1,18 @@
-import Image from "next/image";
+type LogoProps = { testId?: string; priority?: boolean; sizes?: string };
 
-type LogoImageProps = { testId?: string; priority?: boolean };
-
-/** Shota's original globalAI logo file. Never replace with a text wordmark. */
-export function LogoImage({ testId, priority = false }: LogoImageProps) {
+/**
+ * The original GlobalAI mark, traced to vector with the new brand colours.
+ * Two files, one per theme; CSS shows the one that matches (see .logo-pair in globals.css).
+ * Never replace with a text wordmark.
+ */
+export function Logo({ testId, priority = false, sizes }: LogoProps) {
+  const common = { width: 257, height: 51, decoding: "async" as const, sizes };
   return (
-    <Image
-      src="/brand/globalai-logo.png"
-      alt="globalAI"
-      width={1471}
-      height={292}
-      priority={priority}
-      loading={priority ? undefined : "eager"}
-      sizes="152px"
-      data-testid={testId}
-      style={{ height: 30, width: "auto", display: "block" }}
-    />
+    <span className="logo-pair" data-testid={testId}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- SVG brand files, no optimisation needed */}
+      <img className="on-dark" alt="GlobalAI" src="/brand/globalai-logo-dark.svg" {...common} fetchPriority={priority ? "high" : undefined} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="on-light" alt="GlobalAI" src="/brand/globalai-logo-light.svg" {...common} />
+    </span>
   );
 }

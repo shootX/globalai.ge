@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { PAGES, path } from '../support/routes';
 
 // შოთას ორიგინალი ლოგო უნდა იყოს, არა ტექსტური wordmark.
-const LOGO_SRC = /globalai-logo(-clean)?\.(png|svg|webp)/;
+const LOGO_SRC = /globalai-logo(-[a-z]+)?\.(png|svg|webp)/;
 
 for (const page of PAGES) {
   test(`${page}: header და footer ლოგო = ორიგინალი სურათი @mockup`, async ({ page: p }) => {

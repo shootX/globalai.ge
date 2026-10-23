@@ -91,7 +91,7 @@ Tags: `services`, `projects`, `pages`, `team`, `settings`. If the URL or secret 
 
 - `users` — admins only. Created with `php artisan admin:create`.
 - `services` — translatable slug, title, summary, body, SEO; `sort_order`; `is_published`.
-- `projects` — the same, plus translatable category, `cover_image`, `gallery`.
+- `projects` — the same, plus translatable category, `cover_image`, `gallery`, `website_url` (the venture's public site, http/https only) and `status` (`live` or `building`, default `live`). `VenturesSeeder` adds autolime.ge and gocar.ge as unpublished drafts.
 - `pages` — `key`, translatable content blocks and SEO. The five keys are inserted by the migration with empty blocks.
 - `team_members` — translatable name, role, bio; photo; `sort_order`; `is_published`.
 - `contact_submissions` — name, email, optional phone and subject, message, locale, ip, user_agent, status.

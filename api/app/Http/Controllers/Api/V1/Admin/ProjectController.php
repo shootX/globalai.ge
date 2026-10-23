@@ -76,9 +76,9 @@ class ProjectController extends Controller
             'slug', 'title', 'summary', 'body', 'category', 'seo_title', 'seo_description',
         ]);
 
-        foreach (['cover_image', 'gallery', 'og_image', 'noindex', 'sort_order', 'is_published'] as $field) {
+        foreach (['cover_image', 'gallery', 'website_url', 'status', 'og_image', 'noindex', 'sort_order', 'is_published'] as $field) {
             if (array_key_exists($field, $data)) {
-                $project->{$field} = $field === 'og_image' && $data[$field] === '' ? null : $data[$field];
+                $project->{$field} = in_array($field, ['og_image', 'website_url'], true) && $data[$field] === '' ? null : $data[$field];
             }
         }
     }

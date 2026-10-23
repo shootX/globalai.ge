@@ -1,7 +1,9 @@
 import { routing, type Locale } from "@/i18n/routing";
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://globalai.ge").replace(/\/+$/, "");
-export const OG_IMAGE = "/brand/globalai-logo.png";
+/** Default share image (1200×630, dark ground with the logo). */
+export const OG_IMAGE = "/brand/og-default.png";
+export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const;
 
 export type PageKey = "home" | "about" | "services" | "projects" | "contact";
 export const PAGE_PATHS: Record<PageKey, string> = {
