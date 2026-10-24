@@ -8,11 +8,11 @@ Defined as CSS variables in `web/src/app/globals.css`.
 
 | Token | Dark (default) | Light | Use |
 | --- | --- | --- | --- |
-| `--ground` | `#0b0b0c` | `#f3f2ee` | Page background |
-| `--raise` | `#151517` | `#e8e7e1` | Cards and inset panels |
+| `--ground` | `#0b0b0c` | `#ffffff` | Page background |
+| `--raise` | `#151517` | `#f3f3f0` | Cards and inset panels |
 | `--ink` | `#f2f1ec` | `#0d0d0e` | Text and headlines |
 | `--mute` | `#8f8e88` | `#5f5e58` | Labels and secondary text |
-| `--line` | `#26262a` | `#d6d5ce` | Hairline dividers |
+| `--line` | `#26262a` | `#e4e4df` | Hairline dividers |
 | `--lime` | `#d4f57a` | `#d4f57a` | Field colour: model section, CTA band, chips |
 | `--accent` | `#d4f57a` | `#4a7300` | Lime-coloured text; deeper olive on light so it stays readable |
 
