@@ -201,6 +201,7 @@ return [
         'body' => 'ტექსტი',
         'category' => 'კატეგორია',
         'cover_image' => 'ქავერის სურათი',
+        'website_url' => 'საიტის ბმული',
         'gallery' => 'გალერეა',
         'gallery.*' => 'გალერეის სურათი',
         'sort_order' => 'რიგითობა',

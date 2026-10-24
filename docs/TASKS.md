@@ -32,3 +32,12 @@ Agents append a dated entry after every task. Read `docs/` first.
 - Revalidation stays a queued HMAC POST to `POST /api/revalidate`, and also sends `REVALIDATE_SECRET`.
 - Admin UI: token page, change log, SEO tab. `docs/BOT_API.md` and `openapi.yaml` describe the bot.
 
+
+## 2026-10-23 — Monument redesign, page-text editor, SEO
+
+- New public design ("Monument") with light and dark themes: tokens, fonts (Noto Sans Georgian + Archivo), SVG logo pair, header with theme toggle and full-screen mobile menu, new home, about, services, projects, project/service detail, contact, 404 and error pages.
+- Copy rewritten in ka/en/ru for the new positioning: a holding that digitises Georgian services and runs them (autolime.ge, gocar.ge).
+- Projects: `website_url` and `status` (live/building) in the API, admin form and public pages; filters are now all/live/building. `VenturesSeeder` adds both as drafts.
+- Admin page editor: fields grouped by page section with Georgian labels, prefilled with the text the site shows today; leftover custom blocks can be removed.
+- SEO: 1200×630 default share image, Organization + WebSite JSON-LD on every page, project/service detail pages in the sitemap with hreflang alternates, richer detail JSON-LD.
+- Tests: 4 new Pest tests (ventures fields, seeder). Web typecheck, lint and build pass.

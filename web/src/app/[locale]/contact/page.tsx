@@ -16,6 +16,7 @@ export default async function ContactPage({ params }: LocaleParams) {
   const locale = await resolveLocale(params);
   const t = await getPageText("contact", locale);
   const s = await getSettings(locale);
+  const socials = socialLinks(s).filter((so) => so.url);
 
   return (
     <>
@@ -29,11 +30,11 @@ export default async function ContactPage({ params }: LocaleParams) {
         }}
       />
       <PageHero testId="contact-hero" label={t("label")} title={t("title")} intro={t("intro")} />
-      <section style={{ paddingTop: 40 }} data-testid="contact-section">
-        <div className="wrap ct2">
+      <section className="block tight" data-testid="contact-section">
+        <div className="wrap grid12 split">
           <div className="info" data-testid="contact-info">
             <div>
-              <span className="m">{t("email")}</span>
+              <span className="label">{t("email")}</span>
               <p>
                 {s.contact_email ? (
                   <a href={`mailto:${s.contact_email}`} data-testid="contact-info-email">
@@ -45,7 +46,7 @@ export default async function ContactPage({ params }: LocaleParams) {
               </p>
             </div>
             <div>
-              <span className="m">{t("phone")}</span>
+              <span className="label">{t("phone")}</span>
               <p>
                 {s.contact_phone ? (
                   <a href={telHref(s.contact_phone)} data-testid="contact-info-phone">
@@ -56,45 +57,39 @@ export default async function ContactPage({ params }: LocaleParams) {
                 )}
               </p>
             </div>
-            <div>
-              <span className="m">{t("address")}</span>
-              <p data-testid="contact-info-address">{s.contact_address}</p>
-            </div>
+            {s.contact_address ? (
+              <div>
+                <span className="label">{t("address")}</span>
+                <p data-testid="contact-info-address">{s.contact_address}</p>
+              </div>
+            ) : null}
             {s.working_hours ? (
               <div>
-                <span className="m">{t("hours")}</span>
+                <span className="label">{t("hours")}</span>
                 <p>{s.working_hours}</p>
               </div>
             ) : null}
-            <div>
-              <span className="m">{t("social")}</span>
-              <p className="s">
-                {socialLinks(s).map((so) =>
-                  so.url ? (
-                    <a key={so.key} href={so.url} rel="noopener noreferrer">
+            {socials.length > 0 ? (
+              <div>
+                <span className="label">{t("social")}</span>
+                <p className="s">
+                  {socials.map((so) => (
+                    <a key={so.key} href={so.url ?? undefined} rel="noopener noreferrer" target="_blank">
                       {so.label}
                     </a>
-                  ) : (
-                    <span key={so.key}>{so.label}</span>
-                  ),
-                )}
-              </p>
-            </div>
+                  ))}
+                </p>
+              </div>
+            ) : null}
           </div>
-          <ContactForm locale={locale} />
+          <div>
+            <h2 className="section-title" style={{ marginBottom: 32 }}>
+              {t("formTitle")}
+            </h2>
+            <ContactForm locale={locale} />
+          </div>
         </div>
       </section>
-      <div className="mapwrap" data-testid="contact-map">
-        <div className="map" role="img" aria-label={t("mapLabel", { address: s.contact_address ?? "" })}>
-          <div className="pin" />
-        </div>
-        <div className="mapcard">
-          <span className="m" style={{ opacity: 0.75 }}>
-            {t("office")}
-          </span>
-          <b>{s.contact_address}</b>
-        </div>
-      </div>
     </>
   );
 }

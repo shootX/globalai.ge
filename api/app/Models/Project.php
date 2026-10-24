@@ -10,9 +10,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-#[Fillable(['slug', 'title', 'summary', 'body', 'category', 'cover_image', 'gallery', 'seo_title', 'seo_description', 'og_image', 'noindex', 'sort_order', 'is_published'])]
+#[Fillable(['slug', 'title', 'summary', 'body', 'category', 'cover_image', 'gallery', 'website_url', 'status', 'seo_title', 'seo_description', 'og_image', 'noindex', 'sort_order', 'is_published'])]
 class Project extends Model
 {
+    /** Ventures that are running vs. still being built. */
+    public const STATUSES = ['live', 'building'];
+
     /** @use HasFactory<ProjectFactory> */
     use Auditable, HasFactory, HasPublishing, HasTranslations;
 

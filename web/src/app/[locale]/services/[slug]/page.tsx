@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getService } from "@/lib/api";
+import { getService, getPageText } from "@/lib/api";
+import { CtaBand } from "@/components/cta-band";
 import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { routing } from "@/i18n/routing";
@@ -45,20 +46,32 @@ export default async function ServiceDetailPage({ params }: Params & LocaleParam
   const { slug } = await params;
   const service = await getService(slug, locale);
   if (!service?.data.title) notFound();
+  const t = await getPageText("services", locale);
   const data = service.data;
   const url = `${SITE_URL}${localizedPath(`/services/${data.slug ?? slug}`, locale)}`;
 
   return (
     <>
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "Service", name: data.title, description: data.seo_description || data.summary, url }} />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: data.title,
+          description: data.seo_description || data.summary,
+          url,
+          provider: { "@id": `${SITE_URL}/#org` },
+          areaServed: "GE",
+        }}
+      />
       <PageHero testId="service-detail" label={LABEL[locale]} title={data.title ?? ""} intro={data.summary ?? ""} />
       {data.body ? (
-        <section>
-          <div className="wrap">
-            <p>{data.body}</p>
+        <section className="block tight">
+          <div className="wrap grid12">
+            <div className="prose">{data.body}</div>
           </div>
         </section>
       ) : null}
+      <CtaBand title={t("ctaBand")} cta={t("ctaContact")} testId="cta-service-contact" />
     </>
   );
 }

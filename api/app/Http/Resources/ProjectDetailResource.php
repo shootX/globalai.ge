@@ -23,6 +23,8 @@ class ProjectDetailResource extends JsonResource
             'body' => $this->translated('body'),
             'category' => $this->translated('category'),
             'cover_image' => $this->cover_image,
+            'website_url' => $this->website_url,
+            'status' => $this->status ?? 'live',
             'gallery' => $this->gallery ?? [],
             'seo_title' => $this->translated('seo_title'),
             'seo_description' => $this->translated('seo_description'),

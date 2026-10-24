@@ -1,31 +1,31 @@
 {
   "meta": {
-    "siteName": "globalAI.GE",
+    "siteName": "GlobalAI",
     "home": {
-      "title": "globalAI.GE — Digital products and AI",
-      "description": "An AI studio from Tbilisi: websites, mobile apps and AI solutions for your business."
+      "title": "GlobalAI — a holding of digital services",
+      "description": "GlobalAI digitises everyday services in Georgia and runs them as businesses: autolime.ge, gocar.ge and new platforms on the way."
     },
     "about": {
-      "title": "About us",
-      "description": "A Tbilisi studio that brings design, code and artificial intelligence together into one product."
+      "title": "Company",
+      "description": "GlobalAI builds, owns and runs digital platforms in Georgia."
     },
     "services": {
-      "title": "Services",
-      "description": "Web development, mobile apps, AI integration, UX/UI design, Cloud & DevOps and product strategy."
+      "title": "What we build",
+      "description": "Platforms, mobile apps, AI and operations: everything it takes to digitise a service and run it."
     },
     "projects": {
       "title": "Projects",
-      "description": "Selected projects — websites, mobile apps and AI solutions."
+      "description": "GlobalAI platforms: autolime.ge, gocar.ge and what is in the works."
     },
     "contact": {
       "title": "Contact",
-      "description": "Tell us about your project — we reply within 24 hours."
+      "description": "Partnership, investment or a job: write to us and we reply within 24 hours."
     }
   },
   "nav": {
     "home": "Home",
-    "about": "About",
-    "services": "Services",
+    "about": "Company",
+    "services": "What we build",
     "projects": "Projects",
     "contact": "Contact",
     "cta": "Get in touch",
@@ -33,14 +33,17 @@
     "menuClose": "Close menu",
     "main": "Main navigation",
     "language": "Choose language",
-    "home_logo": "globalAI — home page"
+    "home_logo": "GlobalAI — home page",
+    "theme": "Light / dark theme"
   },
   "footer": {
     "menu": "Menu",
+    "ventures": "Platforms",
+    "contact": "Contact",
     "links": "Links",
     "social": "Social",
-    "rights": "All rights reserved",
-    "city": "Tbilisi · Georgia",
+    "rights": "All rights reserved.",
+    "city": "Tbilisi, Georgia",
     "country": "Georgia"
   },
   "common": {
@@ -49,133 +52,153 @@
       "years": "Years of experience",
       "clients": "Happy clients",
       "languages": "Languages · KA EN RU"
-    }
+    },
+    "errorTitle": "Something went wrong",
+    "retry": "Try again"
   },
   "home": {
-    "orbLabel": "Abstract sphere",
-    "showreel": "Showreel",
-    "showreelSub": "2026 work",
-    "redcard1": "AI studio from Tbilisi",
-    "redcard2": "Web · Mobile · AI",
-    "ctaPrimary": "Start a project",
-    "col1t": "globalAI.GE",
-    "col1": "Digital products and AI solutions",
-    "col2t": "We build",
-    "col2": "websites, apps and smart agents for your business",
-    "col3t": "Process",
-    "col3": "Research → Design → Code → Launch",
-    "h1a": "Digital",
-    "h1b": "products",
-    "ctaSecondary": "See our work",
-    "scroll": "Scroll down ↓",
-    "down": "Down to services",
-    "servicesTitle": "Services",
-    "servicesLabel": "02 — What we do",
-    "projectsTitle": "Projects",
-    "projectsLabel": "03 — Selected work",
-    "soon1": "New projects are",
-    "soon2": "coming",
-    "soon3": "soon.",
-    "soonCta": "Get in touch →",
-    "aboutLabel": "04 — About us",
-    "aboutTitle1": "Technology",
-    "aboutTitle2": "that works",
-    "aboutText": "globalAI.GE is a Tbilisi studio that brings together designers, developers and AI specialists. We build products that grow businesses — from idea to launch.",
-    "aboutCta": "Learn more",
-    "contactLabel": "05 — Contact",
-    "contactTitle1": "Let’s start",
-    "contactTitle2": "a conversation"
+    "heroLead": "We digitise Georgia's services and",
+    "heroAccent": "run them ourselves",
+    "heroTail": "as businesses.",
+    "heroSide": "A holding of digital services from Tbilisi. autolime.ge, gocar.ge and what comes next.",
+    "ctaPrimary": "Projects",
+    "ctaSecondary": "Partnership",
+    "heroFoot": "Tbilisi, Georgia",
+    "heroMore": "Learn more ↓",
+    "aboutLabel": "Company",
+    "thesisLead": "Every service that runs on phone calls and queues today",
+    "thesisAccent": "will fit on one screen",
+    "thesisTail": "tomorrow.",
+    "aboutText": "GlobalAI looks for everyday services that still run on paper and phone calls. We build their digital version, launch it under our own brand and run it commercially.",
+    "aboutStrong": "We are not an agency that hands a project over. We are the owner who grows it.",
+    "aboutCta": "About the company",
+    "venturesTitle": "Projects",
+    "venturesNote": "Live platforms and what is in the works",
+    "statusLive": "Live",
+    "statusBuilding": "In the works",
+    "nextTitle": "Next",
+    "nextMeta": "2026 – 2027",
+    "nextText": "Several new platforms are already in development",
+    "modelLabel": "Model",
+    "modelTitle": "How every project is made",
+    "step1Title": "Find",
+    "step1Text": "a service people use every day that still works offline.",
+    "step2Title": "Digitise",
+    "step2Text": "We build the platform, the app and the AI tools that make the process simple.",
+    "step3Title": "Run",
+    "step3Text": "We launch it under our own brand and run it commercially with our own team.",
+    "step4Title": "Grow",
+    "step4Text": "We take a proven model to new cities and new categories.",
+    "partnersLabel": "Who we work with",
+    "partnersTitle": "Three ways to be part of the next project",
+    "aud1Title": "Service owners",
+    "aud1Text": "Does your business still run on calls and notebooks? Let's turn it into a digital platform together.",
+    "aud1Cta": "Get in touch",
+    "aud2Title": "Investors",
+    "aud2Text": "Each of our projects is a working business with its own revenue and growth plan.",
+    "aud2Cta": "Book a meeting",
+    "aud3Title": "Join the team",
+    "aud3Text": "We are looking for developers, designers and operations managers who care about growing a product.",
+    "aud3Cta": "Write to us",
+    "contactTitle": "Have a service that is waiting to go digital?",
+    "contactCta": "Book a meeting",
+    "contactNote": "Partnership, investment and collaboration",
+    "copy": "Copy",
+    "copied": "Copied",
+    "footerTagline": "A holding of digital services. We digitise Georgia's services and run them commercially."
   },
   "about": {
-    "label": "02 — Studio",
-    "title": "About us",
-    "intro": "A Tbilisi studio that brings design, code and artificial intelligence together into one product.",
-    "missionLabel": "01 — Mission",
-    "mission": "We build technology that genuinely helps businesses",
-    "p1": "globalAI.GE brings designers, developers and AI specialists together in one team.",
-    "p2": "We work with startups and large companies — from idea and research to launch and further growth. We treat every project as our own.",
-    "ctaServices": "Our services",
-    "valuesTitle": "Values",
-    "valuesLabel": "02 — What we believe in",
+    "label": "Company",
+    "title": "Owner and operator",
+    "intro": "GlobalAI builds, owns and runs digital platforms in Georgia. Each one starts with a single everyday service and grows into a working business.",
+    "missionLabel": "Mission",
+    "mission": "Everyday services that respect people's time",
+    "p1": "Many services in Georgia still run on phone calls, paper and queues. To us that is an opportunity: we find such a service and give it a simple digital form.",
+    "p2": "We run every platform with our own team and brand. Product, customers and revenue are in one hand, so we answer for the quality too.",
+    "ctaServices": "What we build",
+    "valuesTitle": "How we choose and build",
+    "valuesLabel": "Principles",
     "values": [
       {
-        "t": "Transparency",
-        "d": "Every stage, deadline and budget is agreed upfront."
+        "t": "Everyday",
+        "d": "We pick services people use every week."
       },
       {
-        "t": "Quality",
-        "d": "Clean code, tests and code review on every release."
+        "t": "Simplicity",
+        "d": "What needs a call and a queue today should fit on one screen."
       },
       {
-        "t": "Speed",
-        "d": "Short iterations — you see results in weeks, not months."
+        "t": "Ownership",
+        "d": "We run each project with our own team and brand."
       },
       {
-        "t": "Partnership",
-        "d": "We stay by your side after launch: support and growth."
+        "t": "Scale",
+        "d": "We take a working model from city to city."
       }
     ],
     "teamTitle": "Team",
-    "teamLabel": "03 — People",
-    "ctaBand": "Let’s work together",
+    "teamLabel": "People",
+    "ctaBand": "Let's build the next project together",
     "ctaContact": "Get in touch"
   },
   "services": {
-    "label": "03 — What we do",
-    "title": "Services",
-    "intro": "Six disciplines, one team — the full cycle from idea to launch and ongoing support.",
-    "processTitle": "Process",
-    "processLabel": "07 — How we work",
+    "label": "Capabilities",
+    "title": "What we build",
+    "intro": "Everything it takes to digitise a service and run it sits in one team: product, technology and operations.",
+    "processTitle": "One model for every project",
+    "processLabel": "Process",
     "steps": [
       {
-        "t": "Discovery",
-        "d": "Goals, users and requirements."
+        "t": "Find",
+        "d": "A service that still works offline."
       },
       {
-        "t": "Design",
-        "d": "Prototype and visual system."
+        "t": "Digitise",
+        "d": "Platform, app and AI tools."
       },
       {
-        "t": "Development",
-        "d": "Short sprints, tests and demos."
+        "t": "Run",
+        "d": "Our own brand, team and revenue."
       },
       {
-        "t": "Launch",
-        "d": "Release, monitoring and growth."
+        "t": "Grow",
+        "d": "New cities and categories."
       }
     ],
-    "ctaBand": "Have an idea? Let’s begin",
-    "ctaContact": "Start a project"
+    "ctaBand": "Have a service that is waiting to go digital?",
+    "ctaContact": "Get in touch"
   },
   "projects": {
-    "label": "04 — Work",
+    "label": "Portfolio",
     "title": "Projects",
-    "intro": "Selected projects — websites, mobile apps and AI solutions.",
+    "intro": "Platforms that already run, and what is in the works.",
     "filterLabel": "Filter",
     "filters": {
       "all": "All",
-      "web": "Web",
-      "mobile": "Mobile",
-      "ai": "AI"
+      "live": "Live",
+      "building": "In the works"
     },
     "emptyTitle": "Soon",
     "emptyText": "Projects will be added soon.",
     "emptyCta": "Get in touch",
     "error": "Could not load projects. Please try again later.",
-    "ctaBand": "Your project is next",
+    "visit": "Visit the site",
+    "more": "Details",
+    "ctaBand": "The next project could be yours",
     "ctaContact": "Get in touch"
   },
   "contact": {
-    "label": "05 — Let’s talk",
-    "title": "Contact",
-    "intro": "Tell us about your project — we reply within 24 hours.",
+    "label": "Contact",
+    "title": "Let's talk",
+    "intro": "Partnership, investment or a job: write to us and we reply within 24 hours.",
     "email": "Email",
     "phone": "Phone",
     "address": "Address",
     "hours": "Working hours",
     "social": "Social",
     "office": "Office",
-    "mapLabel": "Map — {address}"
+    "mapLabel": "Map — {address}",
+    "formTitle": "Write to us"
   },
   "form": {
     "name": "Name",
@@ -183,26 +206,26 @@
     "email": "Email",
     "subject": "Subject",
     "optional": "(optional)",
-    "subjectPh": "e.g. a website",
+    "subjectPh": "e.g. Partnership",
     "message": "Message",
-    "messagePh": "Tell us about your project",
+    "messagePh": "Tell us about your service or idea",
     "submit": "Send",
     "sending": "Sending…",
-    "success": "Thank you! Your message was received — we’ll reply soon.",
-    "error": "Sending failed. Please check the fields and try again.",
+    "success": "Thank you! Your message has been received, we will reply soon.",
+    "error": "Sending failed. Check the fields and try again.",
     "honeypot": "Leave this field empty",
     "errors": {
-      "nameRequired": "Please enter your name.",
-      "emailRequired": "Please enter your email.",
-      "emailInvalid": "Email format is invalid.",
-      "messageRequired": "Please enter a message.",
-      "messageShort": "Message is too short.",
-      "tooLong": "Text is too long."
+      "nameRequired": "Enter your name.",
+      "emailRequired": "Enter your email.",
+      "emailInvalid": "The email format is invalid.",
+      "messageRequired": "Enter a message.",
+      "messageShort": "The message is too short.",
+      "tooLong": "The text is too long."
     }
   },
   "notFound": {
     "title": "Page not found",
-    "back": "Back to home"
+    "back": "Back to the home page"
   },
   "adminOps": {
     "navTokens": "API tokens",

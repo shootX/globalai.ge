@@ -22,6 +22,8 @@ class ProjectResource extends JsonResource
             'summary' => $this->translated('summary'),
             'category' => $this->translated('category'),
             'cover_image' => $this->cover_image,
+            'website_url' => $this->website_url,
+            'status' => $this->status ?? 'live',
             'sort_order' => $this->sort_order,
             'noindex' => (bool) $this->noindex,
         ];

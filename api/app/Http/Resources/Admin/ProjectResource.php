@@ -23,6 +23,8 @@ class ProjectResource extends JsonResource
             'body' => $this->translationMap('body'),
             'category' => $this->translationMap('category'),
             'cover_image' => $this->cover_image,
+            'website_url' => $this->website_url,
+            'status' => $this->status ?? 'live',
             'gallery' => $this->gallery ?? [],
             'seo_title' => $this->translationMap('seo_title'),
             'seo_description' => $this->translationMap('seo_description'),

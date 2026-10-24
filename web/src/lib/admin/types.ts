@@ -22,11 +22,13 @@ export type AdminService = {
   is_published: boolean;
 };
 
-/** openapi: ProjectWrite (= ServiceWrite + category, cover_image, gallery) + id. */
+/** openapi: ProjectWrite (= ServiceWrite + category, cover_image, gallery, website_url, status) + id. */
 export type AdminProject = Omit<AdminService, never> & {
   category: Translations;
   cover_image: string | null;
   gallery: string[];
+  website_url: string | null;
+  status: "live" | "building";
 };
 
 /** openapi: TeamWrite + id. */

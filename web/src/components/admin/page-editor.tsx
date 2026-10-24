@@ -6,7 +6,7 @@ import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,7 +17,10 @@ import { i18nSchema, localesWithErrors } from "@/lib/admin/fields";
 import { adminOps } from "@/lib/admin/ops-copy";
 import { ADMIN_LOCALES, emptyT, type AdminLocale, type AdminPage, type ApiItem, type PageKey, type Translations } from "@/lib/admin/types";
 import { cn } from "@/lib/utils";
-import { PAGE_BLOCKS } from "@/lib/page-blocks";
+import { PAGE_BLOCK_GROUPS, PAGE_BLOCKS, type BlockGroup } from "@/lib/page-blocks";
+import kaMessages from "../../../messages/ka.json";
+import enMessages from "../../../messages/en.json";
+import ruMessages from "../../../messages/ru.json";
 import { LocaleTabs } from "./locale-tabs";
 import { PageHeader } from "./page-header";
 import { SaveBar, type SaveState } from "./save-bar";
@@ -29,6 +32,14 @@ const ops = adminOps("ka");
 
 /** Block keys public pages read (block key == messages/<locale>.json key). See src/lib/page-blocks.ts. */
 const DEFAULT_BLOCKS: Record<PageKey, readonly string[]> = PAGE_BLOCKS;
+const GROUPS: Record<PageKey, readonly BlockGroup[]> = PAGE_BLOCK_GROUPS;
+const MESSAGES: Record<AdminLocale, Record<string, unknown>> = { ka: kaMessages, en: enMessages, ru: ruMessages };
+
+/** The built-in text the public page shows while a block is empty — used as the editor's starting value. */
+function builtIn(l: AdminLocale, page: PageKey, block: string): string {
+  const v = (MESSAGES[l][page] as Record<string, unknown> | undefined)?.[block];
+  return typeof v === "string" ? v : "";
+}
 
 type FormValues = { blocks: Record<string, Translations>; seo_title: Translations; seo_description: Translations; og_image: string | null; noindex: boolean };
 
@@ -42,7 +53,8 @@ function toForm(page: AdminPage | null, key: PageKey): FormValues {
   const extra = Object.entries((page?.content?.ka ?? {}) as Record<string, unknown>).filter(([, v]) => typeof v === "string").map(([k]) => k);
   const names = new Set([...DEFAULT_BLOCKS[key], ...extra]);
   const blocks: Record<string, Translations> = {};
-  for (const n of names) blocks[n] = { ka: str("ka", n), en: str("en", n), ru: str("ru", n) };
+  // Empty blocks start from the built-in text, so the editor shows exactly what the site shows today.
+  for (const n of names) blocks[n] = { ka: str("ka", n) || builtIn("ka", key, n), en: str("en", n) || builtIn("en", key, n), ru: str("ru", n) || builtIn("ru", key, n) };
   return { blocks, seo_title: page?.seo_title ?? emptyT(), seo_description: page?.seo_description ?? emptyT(), og_image: page?.og_image ?? null, noindex: page?.noindex ?? false };
 }
 
@@ -110,7 +122,7 @@ function PageForm({ pageKey, initial }: { pageKey: PageKey; initial: FormValues 
   });
 
   const errored = localesWithErrors(formState.errors as Record<string, unknown>);
-  const textField = (path: string, label: string, multiline = true) =>
+  const textField = (path: string, label: React.ReactNode, multiline = true) =>
     ADMIN_LOCALES.map((l) => {
       const id = `p-${path}-${l}`.replace(/\./g, "-");
       const err = (path.split(".").reduce<unknown>((n, p) => (n as Record<string, unknown> | undefined)?.[p], formState.errors) as Record<string, { message?: string }> | undefined)?.[l]?.message;
@@ -127,6 +139,8 @@ function PageForm({ pageKey, initial }: { pageKey: PageKey; initial: FormValues 
     });
 
   const watched = useWatch({ control });
+  const known = new Set(DEFAULT_BLOCKS[pageKey]);
+  const extraNames = blockNames.filter((n) => !known.has(n));
 
   return (
     <>
@@ -156,9 +170,45 @@ function PageForm({ pageKey, initial }: { pageKey: PageKey; initial: FormValues 
           </div>
           <LocaleTabs value={locale} onChange={setLocale} errored={errored} />
           <div id="locale-panel" role="tabpanel" aria-labelledby={`tab-${locale}`} className={cn("grid gap-6", section !== "content" && "hidden")}>
-            {blockNames.map((n) => (
-              <div key={n}>{textField(`blocks.${n}`, n)}</div>
+            <p className="text-sm text-muted-foreground">
+              ველები უკვე შევსებულია იმ ტექსტით, რომელიც ახლა საიტზე ჩანს. შეცვალეთ საჭირო ადგილი და შეინახეთ. EN და RU ცარიელი ველი საიტზე ჩაშენებულ თარგმანს აჩვენებს.
+            </p>
+            {GROUPS[pageKey].map((g) => (
+              <fieldset key={g.title} className="grid gap-5 border-t border-primary/20 pt-5" data-testid="admin-block-group">
+                <legend className="micro pr-3 text-primary">{g.title}</legend>
+                {g.blocks.map((b) => (
+                  <div key={b.key}>
+                    {textField(
+                      `blocks.${b.key}`,
+                      <>
+                        {b.label} <code className="text-xs text-muted-foreground">{b.key}</code>
+                      </>,
+                      Boolean(b.long),
+                    )}
+                  </div>
+                ))}
+              </fieldset>
             ))}
+            {extraNames.length > 0 ? (
+              <fieldset className="grid gap-5 border-t border-primary/20 pt-5">
+                <legend className="micro pr-3 text-primary">დამატებითი ბლოკები</legend>
+                {extraNames.map((n) => (
+                  <div key={n} className="grid gap-2">
+                    {textField(`blocks.${n}`, n)}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="w-fit rounded-none text-muted-foreground"
+                      data-testid={`admin-block-remove-${n}`}
+                      onClick={() => setBlockNames((b) => b.filter((x) => x !== n))}
+                    >
+                      <X className="size-4" aria-hidden="true" /> ბლოკის წაშლა
+                    </Button>
+                  </div>
+                ))}
+              </fieldset>
+            ) : null}
             <div className="flex flex-wrap items-end gap-2">
               <div className="grid gap-2">
                 <Label htmlFor="new-block">ახალი ბლოკის გასაღები</Label>

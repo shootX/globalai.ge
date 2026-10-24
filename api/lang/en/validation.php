@@ -234,6 +234,7 @@ return [
         'body' => 'body',
         'category' => 'category',
         'cover_image' => 'cover image',
+        'website_url' => 'website',
         'gallery' => 'gallery',
         'gallery.*' => 'gallery image',
         'sort_order' => 'sort order',

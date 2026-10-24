@@ -97,6 +97,21 @@ export function FormFields({ fields, locale, register, control, errors }: FormFi
             />
           );
         }
+        if (f.kind === "select") {
+          return (
+            <div key={f.name} className="grid gap-2">
+              <Label htmlFor={id}>{f.label}</Label>
+              <select id={id} data-testid={`admin-field-${f.name}`} className="h-9 max-w-md rounded-none border border-input bg-white px-3 text-sm" {...register(f.name)}>
+                {f.options.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+              {err ? <p className="text-sm text-destructive">{err}</p> : null}
+            </div>
+          );
+        }
         return (
           <div key={f.name} className="grid gap-2">
             <Label htmlFor={id}>{f.label}</Label>

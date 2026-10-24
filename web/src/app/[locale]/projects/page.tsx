@@ -36,26 +36,21 @@ export default async function ProjectsPage({ params }: LocaleParams) {
               name: project.title,
               description: project.summary,
               url: `${SITE_URL}${localizedPath(`/projects/${project.slug ?? ""}`, locale)}`,
+              ...(project.website_url ? { sameAs: project.website_url } : {}),
             })),
           ],
         }}
       />
       <PageHero testId="projects-hero" label={t("label")} title={t("title")} intro={t("intro")} />
-      <section style={{ border: 0, paddingTop: 20 }} data-testid="projects-list">
+      <section className="block tight" data-testid="projects-list">
         <div className="wrap">
           {projects === null ? (
-            <p className="fstatus err" role="alert" data-testid="projects-error">
+            <p className="notice fstatus err" role="alert" data-testid="projects-error">
               {t("error")}
             </p>
           ) : isEmpty ? (
-            <div className="empty" data-testid="projects-empty">
-              <div className="dot" aria-hidden="true">
-                ●
-              </div>
-              <h2 className="empty-title">
-                {t("emptyTitle")}
-                <em>.</em>
-              </h2>
+            <div className="empty-state" data-testid="projects-empty">
+              <h2>{t("emptyTitle")}</h2>
               <p>{t("emptyText")}</p>
               <Link className="btn" href="/contact" data-testid="projects-empty-cta">
                 {t("emptyCta")} <span aria-hidden="true">→</span>

@@ -5,7 +5,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { getPage, getProjects, getServices, hasApi } from "@/lib/api";
 import { storageUrl } from "@/lib/admin/storage";
 import { store } from "@/lib/admin/mock-store";
-import { OG_IMAGE, PAGE_PATHS, SITE_URL, localizedPath, type PageKey } from "@/lib/seo";
+import { OG_IMAGE, OG_IMAGE_SIZE, PAGE_PATHS, SITE_URL, localizedPath, type PageKey } from "@/lib/seo";
 
 export const OG_LOCALE: Record<Locale, string> = { ka: "ka_GE", en: "en_US", ru: "ru_RU" };
 
@@ -76,7 +76,7 @@ export async function pageMetadata(locale: Locale, page: PageKey): Promise<Metad
       siteName: t("siteName"),
       locale: OG_LOCALE[locale],
       type: "website",
-      images: [{ url: image, width: 1471, height: 292, alt: "globalAI" }],
+      images: [{ url: image, ...(image === OG_IMAGE ? OG_IMAGE_SIZE : {}), alt: "GlobalAI" }],
     },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
