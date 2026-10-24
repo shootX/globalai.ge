@@ -36,3 +36,11 @@
 - Page text: block key == message key. `web/src/lib/page-blocks.ts` `PAGE_BLOCK_GROUPS` is the list the admin editor shows. Add a new editable string there and in all three `messages/*.json`.
 - The admin editor saves every prefilled block, because the API requires a non-empty `content.ka`. After the first save the CMS text wins over later changes to `messages/*.json`.
 - `api/composer.lock` currently needs PHP 8.4 (symfony 8.1). A PHP 8.3 machine cannot `composer install` it as is.
+
+## 2026-10-24 — No project hover image
+
+- The cover that followed the cursor was only in `web/src/components/venture-list.tsx` (`.peek` in `globals.css`). Home and `/projects` both render that list. It is gone. Do not add it back; `docs/DESIGN.md` no longer describes it. The detail page cover (`img.cover`) stays.
+- `.venture-list > :last-child { border-bottom }` only styled the peek node (it was the last child and `position: fixed`), so that rule was removed with it. Row separators are still each row's `border-top`.
+- Projects page copy comes from `messages/*.json` until a CMS block with the same key is non-empty. The live `pages/projects` content is `{blocks: ...}`, so it does not override `intro`. Georgian intro is now `პლატფორმები, რომლებიც უკვე მუშაობენ, და ის, რაც მზადდება.`
+- Russian list chips use `projects.filters.live/building` (`Работают` / `Готовятся`), which is plural because those strings are also the filter buttons. Home chips use the singular `statusLive` / `statusBuilding`. Left as-is.
+- `GET /projects/{slug}?locale=ru` is 404 for autolime and geoapi (`alternates.ru` is null) even though the Russian list returns those slugs, so `/ru/projects/autolime` does not open the project. That is content/API slug data, not a UI string.

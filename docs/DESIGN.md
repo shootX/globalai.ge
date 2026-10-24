@@ -40,7 +40,7 @@ Defined as CSS variables in `web/src/app/globals.css`.
 
 ## Layout notes
 
-- Home: hero sentence + monument logo, thesis, ventures list (big names, status chip, cover image follows the pointer on desktop), lime "model" section, three audience cards, contact CTA with copy-email.
+- Home: hero sentence + monument logo, thesis, ventures list (big names, status chip), lime "model" section, three audience cards, contact CTA with copy-email.
 - Inner pages: large page title, then content, then the lime CTA band.
 - Empty projects: a short coming-soon line and a contact link. No fake case studies.
 - Team and stats regions are not rendered while their flags are false.

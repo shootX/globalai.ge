@@ -41,3 +41,9 @@ Agents append a dated entry after every task. Read `docs/` first.
 - Admin page editor: fields grouped by page section with Georgian labels, prefilled with the text the site shows today; leftover custom blocks can be removed.
 - SEO: 1200×630 default share image, Organization + WebSite JSON-LD on every page, project/service detail pages in the sitemap with hreflang alternates, richer detail JSON-LD.
 - Tests: 4 new Pest tests (ventures fields, seeder). Web typecheck, lint and build pass.
+
+## 2026-10-24 — Remove project hover preview
+
+- Removed the desktop cover preview that followed the pointer over a project row (`VentureList` peek image, used on the home ventures list and the projects page). Hover still shifts and recolors the name. Project detail keeps its cover image.
+- Text check of hardcoded ka/en/ru strings on the projects list and project detail: fixed the Georgian intro (`მუშაობს` → `მუშაობენ`). Other chrome strings are fine. Russian status chips reuse the plural filter labels; Russian project detail 404s because `alternates.ru` is null. CMS project copy was not edited.
+- `npm run build` in `web/` passes. Hover checked in the browser on the home and projects pages at desktop: no preview image.
